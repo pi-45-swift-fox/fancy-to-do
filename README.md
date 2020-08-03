@@ -17,10 +17,10 @@ List of available endpoint:
 _Request Body_
 ```json
   {
-    "title": string,
-    "description": string,
-    "status": boolean,
-    "Due_date": date
+    "title": "string",
+    "description": "string",
+    "status": "boolean",
+    "Due_date": "date"
   }
 
 ```
@@ -28,13 +28,13 @@ _Request Body_
 _Response (201 - Created)_
 ```json
   {
-    "id": integer,
-    "title": string,
-    "description": string,
-    "status": boolean,
-    "Due_date": date,
-    "createdAt": date,
-    "updatedAt": date
+    "id": "integer",
+    "title": "string",
+    "description": "string",
+    "status": "boolean",
+    "Due_date": "date",
+    "createdAt": "date",
+    "updatedAt": "date"
   }
 ```
 
@@ -139,10 +139,10 @@ _Response (500 - Internal Server Error)_
 _Request Body_
 ```json
   {
-    "title": string,
-    "description": string,
-    "status": boolean,
-    "Due_date": date
+    "title": "string",
+    "description": "string",
+    "status": "boolean",
+    "Due_date": "date"
   }
 
 ```
@@ -150,13 +150,13 @@ _Request Body_
 _Response (200 - OK)_
 ```json
   {
-    "id": integer,
-    "title": string,
-    "description": string,
-    "status": boolean,
-    "Due_date": date,
-    "createdAt": date,
-    "updatedAt": date
+    "id": "integer",
+    "title": "string",
+    "description": "string",
+    "status": "boolean",
+    "Due_date": "date",
+    "createdAt": "date",
+    "updatedAt": "date"
   }
 ```
 
@@ -197,10 +197,10 @@ _Response (500 - Internal Server Error)_
 _Request Body_
 ```json
   {
-    "title": string,
-    "description": string,
-    "status": boolean,
-    "Due_date": date
+    "title": "string",
+    "description": "string",
+    "status": "boolean",
+    "Due_date": "date"
   }
 
 ```
@@ -208,13 +208,13 @@ _Request Body_
 _Response (200 - OK)_
 ```json
   {
-    "id": integer,
-    "title": string,
-    "description": string,
-    "status": boolean,
-    "Due_date": date,
-    "createdAt": date,
-    "updatedAt": date
+    "id": "integer",
+    "title": "string",
+    "description": "string",
+    "status": "boolean",
+    "Due_date": "date",
+    "createdAt": "date",
+    "updatedAt": "date"
   }
 ```
 
