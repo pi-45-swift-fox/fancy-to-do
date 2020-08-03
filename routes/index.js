@@ -3,8 +3,8 @@ const {HomeController, TodoController} = require('../controllers');
 
 // Home
 router.get('/', HomeController.main);
-// router.get('/register', HomeController.register);
-// router.get('/login', HomeController.login);
+router.post('/login', HomeController.login);
+router.post('/register', HomeController.register);
 
 // Todos
 router.get('/todos', TodoController.main);
