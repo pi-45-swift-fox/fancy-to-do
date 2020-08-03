@@ -1,0 +1,31 @@
+post
+
+{
+    "id": 1,
+    "title": "Cooking tempe",
+    "description": "Recipe how to cook tempe",
+    "status": false,
+    "due_date": "2020-08-06T00:00:00.000Z",
+    "updatedAt": "2020-08-03T09:31:12.213Z",
+    "createdAt": "2020-08-03T09:31:12.213Z"
+}
+
+updatedAt
+{
+    "title": "Making tempe",
+    "description": "making  sushi tempe ",
+    "status": "false",
+    "due_date": "2020-08-06"
+}
+
+delete
+
+{
+    "id": 1,
+    "title": "Making tempe",
+    "description": "making  sushi tempe ",
+    "status": false,
+    "due_date": "2020-08-06T00:00:00.000Z",
+    "createdAt": "2020-08-03T09:31:12.213Z",
+    "updatedAt": "2020-08-03T14:27:07.875Z"
+}
