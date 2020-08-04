@@ -7,7 +7,8 @@ class TodoController {
             res.status(200).send(data);
         })
         .catch(err => {
-            res.status(500).send(err);
+            console.log(err);
+            res.status(500).json({msg: 'Something went wrong!'});
         })
     }
 
@@ -17,7 +18,7 @@ class TodoController {
             res.status(200).send(data);
         })
         .catch(err => {
-            res.status(404).send('Not Found');
+            res.status(404).json({msg: 'Not found'});
         })
     }
 
@@ -30,17 +31,18 @@ class TodoController {
             title: req.body.title,
             description: req.body.description,
             status: req.body.status,
-            dueDate: req.body.dueDate
+            dueDate: req.body.dueDate,
+            UserId: req.body.UserId
         };
 
         Todo.create(data)
         .then(data => {
-            res.status(201).send(data);
+            res.status(201).json(data);
             // res.redirect('/');
         })
         .catch(err => {
             console.log(err);
-            res.status(500).send('Something went wrong!');
+            res.status(500).json({msg: 'Something went wrong!'});
         })
     }
 
@@ -50,7 +52,7 @@ class TodoController {
             res.status(200).redirect('/todos');
         })
         .catch(err => {
-            res.status(404).send('Not Found');
+            res.status(404).json({msg: 'Not found'});
         })
     }
 
@@ -63,16 +65,18 @@ class TodoController {
             title: req.body.title,
             description: req.body.description,
             status: req.body.status,
-            dueDate: req.body.dueDate
+            dueDate: req.body.dueDate,
+            UserId: req.body.UserId
         };
 
-        Todo.update(null, {where: {id: 999/*+req.params.id*/}})
+        res.json(data);
+
+        Todo.update(data, {where: {id: null/*+req.params.id*/}})
         .then(() => {
             res.status(200).redirect('/todos');
         })
         .then(err => {
-            res.send(err);
-            // res.status(404).send('Not Found');
+            res.status(404).json({msg: 'Not found'});
         })
     }
 }

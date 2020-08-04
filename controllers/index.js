@@ -1,7 +1,7 @@
 const {User} = require('../models');
-const TodoController = require('./todo');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const TodoController = require('./todo');
 
 class HomeController {
     static main(req, res) {
@@ -11,7 +11,11 @@ class HomeController {
     static login(req, res) {
         let tmp;
 
-        User.findOne({where: {username: req.body.username}})
+        User.findOne({
+            where: {
+                username: req.body.username
+            }
+        })
         .then(data => {
             tmp = data;
             return bcrypt.compare(req.body.password, data.password);
@@ -29,7 +33,7 @@ class HomeController {
             }
         })
         .catch(err => {
-            res.status(500).json(err)
+            res.status(500).json(err);
         })
     }
 
