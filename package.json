@@ -1,0 +1,28 @@
+{
+  "name": "day1",
+  "version": "1.0.0",
+  "description": "Todos App is an application to manage your best work will be do. This app has :  * RESTful endpoint for asset's CRUD operation * JSON formatted response",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^8.3.0",
+    "sequelize": "^6.3.4"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/izzul003/fancy-todo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/izzul003/fancy-todo/issues"
+  },
+  "homepage": "https://github.com/izzul003/fancy-todo#readme"
+}
