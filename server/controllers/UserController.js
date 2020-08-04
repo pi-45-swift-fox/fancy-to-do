@@ -23,13 +23,18 @@ class UserController {
                         throw {
                             name: "BadRequest",
                             message: "Invalid email or password",
-                            status: 400
+                            status: 401
                         }
+                    }
+                } else {
+                    throw {
+                        message: 'User Doesnt Exist',
+                        status: 404,
+                        name: 'NotFound'
                     }
                 }
             })
             .catch(err => {
-                console.log(err);
                 next (err)
             })
     }
