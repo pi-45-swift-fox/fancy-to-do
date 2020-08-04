@@ -202,7 +202,6 @@ function showTodo() {
 }
 
 function getQr(input) {
-    console.log(input);
     Swal.fire({
         title: 'Your QR Todo',
         html: '<img id="qr" style="width: 150px; height: 150px;">',
