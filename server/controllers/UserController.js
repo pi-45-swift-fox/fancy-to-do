@@ -45,7 +45,12 @@ class UserController {
             password
         })
             .then(newUser => {
-                return res.status(201).json(newUser)
+                const userData = {
+                    id: newUser.id,
+                    email: newUser.email
+                }
+                let access_token = generateToken(userData)
+                return res.status(201).json({message: newUser, access_token: access_token})
             })
             .catch(err => {
                 console.log(err);

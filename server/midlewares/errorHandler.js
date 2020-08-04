@@ -28,6 +28,9 @@ function errorHandler (err, req, res, next) {
         case "JsonWebTokenError":
             res.json({message: err.message})
         break;
+        case "SequelizeUniqueConstraintError":
+            res.json({message: 'email already registered!'})
+        break;
     }
 }
 
