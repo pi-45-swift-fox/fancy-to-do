@@ -1,25 +1,25 @@
-const {Todo} = require('../models');
+const { Todo } = require('../models');
 
 class TodoController {
     static main(req, res) {
         Todo.findAll()
-        .then(data => {
-            res.status(200).send(data);
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({msg: 'Something went wrong!'});
-        })
+            .then(data => {
+                res.status(200).send(data);
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({ msg: 'Something went wrong!' });
+            })
     }
 
     static detail(req, res) {
         Todo.findByPk(+req.params.id)
-        .then(data => {
-            res.status(200).send(data);
-        })
-        .catch(err => {
-            res.status(404).json({msg: 'Not found'});
-        })
+            .then(data => {
+                res.status(200).send(data);
+            })
+            .catch(err => {
+                res.status(404).json({ msg: 'Not found' });
+            })
     }
 
     static getNew(req, res) {
@@ -36,24 +36,24 @@ class TodoController {
         };
 
         Todo.create(data)
-        .then(data => {
-            res.status(201).json(data);
-            // res.redirect('/');
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({msg: 'Something went wrong!'});
-        })
+            .then(data => {
+                res.status(201).json(data);
+                // res.redirect('/');
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({ msg: 'Something went wrong!' });
+            })
     }
 
     static delete(req, res) {
         Todo.destroy(+req.params.id)
-        .then(() => {
-            res.status(200).redirect('/todos');
-        })
-        .catch(err => {
-            res.status(404).json({msg: 'Not found'});
-        })
+            .then(() => {
+                res.status(200).redirect('/todos');
+            })
+            .catch(err => {
+                res.status(404).json({ msg: 'Not found' });
+            })
     }
 
     static getEdit(req, res) {
@@ -71,13 +71,13 @@ class TodoController {
 
         res.json(data);
 
-        Todo.update(data, {where: {id: null/*+req.params.id*/}})
-        .then(() => {
-            res.status(200).redirect('/todos');
-        })
-        .then(err => {
-            res.status(404).json({msg: 'Not found'});
-        })
+        Todo.update(data, { where: { id: null/*+req.params.id*/ } })
+            .then(() => {
+                res.status(200).redirect('/todos');
+            })
+            .then(err => {
+                res.status(404).json({ msg: 'Not found' });
+            })
     }
 }
 

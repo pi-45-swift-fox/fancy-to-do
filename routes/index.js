@@ -1,11 +1,23 @@
 const router = require('express').Router();
-const {HomeController, TodoController} = require('../controllers');
-const Auth = require('../middlewares');
+const { HomeController, TodoController, UserController } = require('../controllers');
+const { Auth } = require('../middlewares');
 
 // Home
 router.get('/', HomeController.main);
-router.post('/login', HomeController.login);
-router.post('/register', HomeController.register);
+// Users
+router.get('/users', UserController.main);
+router.post('/login', UserController.login);
+router.post('/register', UserController.register);
+    // Third-Party API
+router.post('/users/send', UserController.send);
+    /* Usage:
+    Gunakan body form-encoded
+    Required Key adalah sebagai berikut:
+        - Kasih_ID dengan key User ID yang datanya ingin di ambil,
+        - from dengan key pengirim email,
+        - to dengan key penerima email,
+        
+     */
 // Todos
 router.get('/todos', TodoController.main);
 router.get('/todos/add', TodoController.getNew);
