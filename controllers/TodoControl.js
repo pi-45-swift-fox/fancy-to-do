@@ -1,6 +1,6 @@
 const { Todo } = require('../models')
 
-class TodoControl {
+class TodoController {
     static show(req, res) {
         Todo.findAll()
             .then(data => res.status(200).json(data))
@@ -8,13 +8,14 @@ class TodoControl {
     }
 
     static create (req, res) {
-        let obj = {
+        let todo = {
             title: req.body.title,
             description: req.body.description,
             status: req.body.status,
-            Due_date: req.body.Due_date
+            dueDate: req.body.dueDate,
+            UserId: req.userLogin.dataValues.id
         }
-        Todo.create(obj)
+        Todo.create(todo)
             .then(todo => res.status(201).json(todo))
             .catch(err => res.status(500).json(err))
     }
@@ -32,7 +33,7 @@ class TodoControl {
     }
 
     static update(req, res) {
-        let obj = {
+        let dataUpdate = {
             title: req.body.title,
             description: req.body.description,
             status: req.body.status,
@@ -43,12 +44,12 @@ class TodoControl {
                 if(!data) {
                     res.status(404).json({message: 'error not found'})
                 } else {
-                    return Todo.update(obj, {
+                    return Todo.update(dataUpdate, {
                         where: {id: req.params.id}
                     })
                 }
             })
-            .then(update => res.status(200).json({dataUpdate:obj}))
+            .then(update => res.status(200).json({dataUpdate}))
             .catch(err => res.status(500).json(err))
     }
 
@@ -69,7 +70,22 @@ class TodoControl {
         })
         .then(success => res.status(200).json({dataDel}))
         .catch(err => res.status(500).json(err))
+        // Todo.destroy({
+        //     where: {
+        //         id: req.params.id
+        //     }
+        // })
+    
+
+        // .then(success => {
+        //     if(success) {
+        //         res.status(200).json({dataDel}))}
+        //     } else {
+        //         res.status(404).json({message: 'error not found'})
+        //     }
+        // }
+        // .catch(err => res.status(500).json(err))
     }
 }
 
-module.exports = TodoControl
+module.exports = TodoController

@@ -5,7 +5,7 @@ const routes = require('./routes')
 
 app.use(express.urlencoded({extended:false}))
 
-app.use('/', routes)
+app.use(routes)
 
 app.listen(port, () => {
     console.log('app running')
