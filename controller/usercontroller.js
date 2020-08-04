@@ -1,7 +1,6 @@
 const {User}=require('../models')
 const bcrypt=require('bcrypt');
 const jwt=require('jsonwebtoken')
-const env=require('dotenv').config()
 
 class Controller{
     static register(req,res){
@@ -30,16 +29,21 @@ class Controller{
                                                 name:req.body.email,
                                             }
                                         })
+                                        //console.log(userData)
             const verified=bcrypt.compareSync(req.body.password,userData.password)
             if(verified){
+                const env=require('dotenv').config()
+
                 const token=jwt.sign({name:userData.name},process.env.JWT_SECRET)
                  res.status(200).json({email:userData.name,token:token})
+                 console.log('bener kok')
             }
             else{
                         res.status(401).json({massage:'Password is Incorrect'})
                     }
         }catch(err){
-         res.status(500).json(err)
+            console.log(err)
+         res.status(500).json({msg:'Error'})
 
         }
 

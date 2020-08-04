@@ -6,13 +6,15 @@ class Constroller{
         let obj={
             title:req.body.title,
             description:req.body.description,
-            status:req.body.status
+            status:req.body.status,
+            UserId:req.userLogin.id
         }
         Todo.create(obj)
         .then(result=>{
             res.status(201).json(result)
         })
         .catch(err=>{
+            console.log(err)
             res.status(500).json({massage:'Fail to Create'})
         })
     }
