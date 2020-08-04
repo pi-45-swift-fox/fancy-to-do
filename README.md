@@ -10,6 +10,8 @@ List of available endpoint:
   - `GET /todos/:id`
   - `PUT /todos/:id`
   - `DELETE /todos/:id`
+  - `POST /register`
+  - `POST /login`
 
 
 ### POST /todos
@@ -20,7 +22,8 @@ _Request Body_
     "title": "string",
     "description": "string",
     "status": "string",
-    "Due_date": "date"
+    "due_date": "date",
+    "UsersId": "integer"
   }
 
 ```
@@ -32,7 +35,8 @@ _Response (201 - Created)_
     "title": "string",
     "description": "string",
     "status": "string",
-    "Due_date": "date",
+    "due_date": "date",
+    "UsersId": "integer",
     "createdAt": "date",
     "updatedAt": "date"
   }
@@ -73,21 +77,24 @@ _Response (200 - OK)_
     "title": "makan",
     "description": "makan ayam",
     "status": "belum",
-    "Due_date": 2020-12-12
+    "Due_date": 2020-12-12,
+    "UsersId": 1
   },
   {
     "id": 2,
     "title": "minum",
     "description": "minum air",
     "status": "belum",
-    "Due_date": 2020-12-12
+    "Due_date": 2020-12-12,
+    "UsersId": 2
   },
   {
     "id": 3,
     "title": "makan",
     "description": "makan sosis",
     "status": "belum",
-    "Due_date": 2020-12
+    "Due_date": 2020-12,
+    "UsersId": 1
   }
 ]
 ```
@@ -108,7 +115,8 @@ _Response (200 - OK)_
     "title": "makan",
     "description": "makan ayam",
     "status": "belum",
-    "Due_date": 2020-12-12
+    "Due_date": 2020-12-12,
+    "UsersId": 1
   }
 ```
 
@@ -134,7 +142,8 @@ _Request Body_
     "title": "string",
     "description": "string",
     "status": "belum",
-    "Due_date": "date"
+    "Due_date": "date",
+    "UsersId": 1
   }
 
 ```
@@ -147,6 +156,7 @@ _Response (200 - OK)_
     "description": "string",
     "status": "belum",
     "Due_date": "date",
+    "UsersId": 1,
     "createdAt": "date",
     "updatedAt": "date"
   }
@@ -186,17 +196,6 @@ _Response (500 - Internal Server Error)_
 ---
 ### DELETE /todos/:id
 
-_Request Body_
-```json
-  {
-    "title": "string",
-    "description": "string",
-    "status": "belum",
-    "Due_date": "date"
-  }
-
-```
-
 _Response (200 - OK)_
 ```json
   {
@@ -205,6 +204,7 @@ _Response (200 - OK)_
     "description": "string",
     "status": "belum",
     "Due_date": "date",
+    "UsersId": 1,
     "createdAt": "date",
     "updatedAt": "date"
   }
@@ -215,6 +215,45 @@ _Response (404 - Not Found)_
 {
   "message": "error Not Found"
 }
+```
+
+_Response (500 - Internal Server Error)_
+```json
+{
+  "message": "Internal Server Error"
+}
+```
+---
+### POST /register
+
+_Request Body_
+```json
+  {
+    "email": "string",
+    "password": "string"
+  }
+
+```
+
+_Response (201 - Created)_
+```json
+  {
+    "id": "integer",
+    "email": "string",
+    "password": "string"
+  }
+```
+
+_Response (400 - Bad Request)_
+```json
+[
+  {
+    "message": "You don't put any password"
+  },
+  {
+    "message": "You don't put any email"
+  }
+]
 ```
 
 _Response (500 - Internal Server Error)_

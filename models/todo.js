@@ -11,38 +11,55 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Todo.belongsTo(models.User, {foreignKey: 'UsersId', targetKey: 'id'});
     }
   };
   Todo.init({
     title: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         notEmpty: {
           args: true,
           msg: 'You don\'t put anything into title'
+        },
+        notNull: {
+          args: true,
+          msg: 'You have to put something to title'
         }
       }
     },
     description: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         notEmpty: {
           args: true,
           msg: `You have to put something into description`
+        },
+        notNull: {
+          args: true,
+          msg: 'You have to put something to description'
         }
       }
     },
     status: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         notEmpty: {
           args: true,
           msg: `You have to put something into status`
+        },
+        notNull: {
+          args: true,
+          msg: 'You have to put something to status'
         }
       }
     },
     due_date: {
       type: DataTypes.DATE,
+      allowNull: false,
       validate: {
         isDate: {
           args: true,
@@ -51,6 +68,24 @@ module.exports = (sequelize, DataTypes) => {
         isAfter: {
           args: "2020-08-03",
           msg: "You must put a date after 3 August 2020"
+        },
+        notNull: {
+          args: true,
+          msg: 'You have to put something to date'
+        }
+      }
+    },
+    UsersId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        isInt: {
+          args: true,
+          msg: 'You must input an User Id'
+        },
+        notNull: {
+          args: true,
+          msg: 'You have to put something to UserId'
         }
       }
     }
@@ -58,16 +93,6 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Todo',
   });
-
-  // Todo.addHook('beforeCreate', (user, options) => {
-  //   console.log(user.title)
-  //   if (!user.title)
-  //     throw new Error('You don\'t put anything into title');
-  //   if (!user.description)
-  //     throw new Error('You don\'t put anything into description');
-  //   if (!user.status)
-  //     throw new Error('You don\'t put anything into status');
-  // });
 
   return Todo;
 };

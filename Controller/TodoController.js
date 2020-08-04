@@ -8,7 +8,7 @@ class TodoController {
         return res.status(200).json(data);
       })
       .catch(err => {
-        return res.status(500).json({"message": "Internal Server Error"});
+        return next(err)
       })
   }
 
@@ -18,14 +18,16 @@ class TodoController {
       "title": req.body.title,
       "description": req.body.description,
       "status": req.body.status,
-      "due_date": new Date(req.body.due_date)
+      "due_date": new Date(req.body.due_date),
+      "UsersId": +req.body.UsersId
     }
+
     Todo.create(obj)
       .then(data => {
         return res.status(201).json(obj);
       })
       .catch(err => {
-        return res.status(400).json({"message": err.message});
+        return next(err)
       })
   }
 
@@ -35,30 +37,34 @@ class TodoController {
       .then(data => {
         if (data)
           return res.status(200).json(data);
-        return res.status(404).json({"message": "err not found"})
+        return next({ errorCode: "NOT_FOUND", message: `Todo list with id ${+req.params.id} not found`});
       })
       .catch(err => {
-        return res.status(500).json({"message": "Internal Server Error"})
+        return next(err);
       });
   }
 
   static update(req, res)
   {
+    const dateNow = new Date();
     const obj = {
       "title": req.body.title,
       "description": req.body.description,
       "status": req.body.status,
-      "due_date": new Date(req.body.due_date)
+      "due_date": new Date(req.body.due_date),
+      "UsersId": +req.body.UsersId
     }
+    if (dateNow > obj.due_date)
+      return next()
 
     Todo.update(obj, {where: {id: +req.params.id}, returning: true})
       .then(data => {
         if (data)
           return res.status(200).json(data[1][0]);
-        return res.status(404).json({"message": "err not found"});
+        return next({ errorCode: "NOT_FOUND", message: `Todo list with id ${+req.params.id} not found`});
       })
       .catch(err => {
-        return res.status(400).json({"message": err.message});
+        return next(err);
       })
 
   }
@@ -70,7 +76,7 @@ class TodoController {
     Todo.findByPk(+req.params.id)
       .then(data => {
         if (!data)
-          return res.status(404).json({"message": "err not found"});
+          return next({ errorCode: "NOT_FOUND", message: `Todo list with id ${+req.params.id} not found`});
         tempData = data;
         return Todo.destroy({where: {id: +req.params.id}})
       })
@@ -78,7 +84,7 @@ class TodoController {
         return res.status(200).json(tempData);
       })
       .catch(err => {
-        return res.status(500).json({"message": "Internal Server Error"})
+        return next(err);
       })
   }
 }
