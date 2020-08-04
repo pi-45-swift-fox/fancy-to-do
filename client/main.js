@@ -93,13 +93,11 @@ function login(event) {
             auth()
         })
         .fail(err => {
-            err.responseJSON.errors.forEach(data => {
-                Swal.fire({
-                    icon: 'error',
-                    title: JSON.stringify(data.msg, null, 2)
-                })
-                auth()
+            Toast.fire({
+                icon: 'error',
+                title: err.responseJSON.message
             })
+            auth()
         })
 }
 
@@ -138,10 +136,8 @@ function register(event) {
             }
         })
         .done(data => {
-            console.log(data)
-                // localStorage.setItem('userId', data.id)
+            console.log(data);
             localStorage.setItem('access_token', data.access_token)
-
             Toast.fire({
                 icon: 'success',
                 title: 'Registered successfully'
@@ -149,12 +145,11 @@ function register(event) {
             auth()
         })
         .fail(err => {
-            err.responseJSON.errors.forEach(data => {
-                Swal.fire({
-                    icon: 'error',
-                    title: data.msg
-                })
+            Toast.fire({
+                icon: 'error',
+                title: err.responseJSON.message
             })
+            auth()
         })
 }
 
