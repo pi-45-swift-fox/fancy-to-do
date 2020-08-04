@@ -1,9 +1,9 @@
-let baseUrl = 'https://fathomless-wildwood-30178.herokuapp.com/'
+let baseUrl = 'http://localhost:3000'
+// let baseUrl = 'https://fathomless-wildwood-30178.herokuapp.com'
 
 $(document).ready(() => {
     auth()
 })
-
 
 function auth() {
     if (localStorage.access_token) {
@@ -110,8 +110,9 @@ function onSignIn(googleUser) {
                 id_token
             }
         })
-        .done(data => {
-            localStorage.setItem('access_token', data.access_token)
+        .done(response => {
+            console.log(response);
+            localStorage.setItem('access_token', response.access_token)
             Toast.fire({
                 icon: 'success',
                 title: 'Logged in successfully'
@@ -119,6 +120,11 @@ function onSignIn(googleUser) {
             auth()
         })
         .fail(err => {
+            Toast.fire({
+                icon: 'error',
+                title: 'Logged in failed'
+            })
+            auth()
             console.log(err)
         })
 }
@@ -163,6 +169,7 @@ function showTodo() {
             }
         })
         .done(result => {
+            console.log(result);
             $('.content-body').empty()
             for (i in result) {
                 let monthName = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
@@ -176,11 +183,32 @@ function showTodo() {
                 <h2 style="color: black;">${result[i].title}</h1>
                 <h4 style="color: black;">${result[i].description}</h3>
                 <h4 style="color: black;">status: ${result[i].status}</h3>
-                <h4 style="color: black;">Due Date : ${day} ${month} ${year}</h3>
+                <h4 style="color: black; margin-bottom: 20px">Due Date : ${day} ${month} ${year}</h3>
                 <div id="actionbtn">
-                <a style="color: lightskyblue;" href="#" onclick="editTodo(${result[i].id})"><h3>Edit</h3></a> 
-                <a style="color: lightskyblue;" href="#" onclick="deleteTodo(${result[i].id})"><h3>Delete</h3></a>
-                <a style="color: lightskyblue;" href="#" onclick="getQr('${result[i].title + ':' + result[i].description}')"><h3>Get QR</h3></a>
+                <a style="color: lightskyblue;" href="#" onclick="editTodo(${result[i].id})">
+                    <div class="tombol">
+                        <img style="margin-left: 10%;" src="https://img.icons8.com/pastel-glyph/40/000000/edit.png"/>
+                        <h5 style="margin-left: 31%;">Edit</h5>
+                    </div>
+                </a> 
+                <a style="color: lightskyblue;" href="#" onclick="deleteTodo(${result[i].id})">
+                    <div class="tombol">
+                        <img style="margin-left: 10%;" src="https://img.icons8.com/material-rounded/40/000000/delete-forever.png"/>
+                        <h5>Delete</h5>
+                    </div>
+                </a>
+                <a style="color: lightskyblue;" href="#" onclick="getQr('${result[i].title + ':' + result[i].description}')">
+                    <div class="tombol">
+                        <img style="margin-left: 10%;" src="https://img.icons8.com/wired/40/000000/qr-code.png"/>
+                        <h5>Get QR</h5>
+                    </div>
+                </a>
+                <a style="color: lightskyblue;" href="#" onclick="send('${result[i].title + ':' + result[i].description}')">
+                    <div class="tombol">
+                        <img style="margin-left: 10%;" src="https://img.icons8.com/material/40/000000/important-mail.png"/>
+                        <h5>Sent Mail</h5>
+                    </div>
+                </a>
                 </div>
                 </div>
                 `)
@@ -197,13 +225,24 @@ function showTodo() {
 }
 
 function getQr(input) {
+    console.log(input, '< ini loh');
+    const qr = `<img src= 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${input}'>`
+    console.log(qr, 'ini qr');
     Swal.fire({
         title: 'Your QR Todo',
-        html: '<img id="qr" style="width: 150px; height: 150px;">',
+        html: `
+        <div>
+        <img id="qr" style="width: 150px; height: 150px;">
+        </div>
+        `,
         focusConfirm: false,
         showCancelButton: true,
     })
     $('#qr').attr('src', `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${input}`)
+}
+
+function send(input) {
+    console.log(input);
 }
 
 function add() {

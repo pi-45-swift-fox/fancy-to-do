@@ -112,9 +112,23 @@ body {
 
 #actionbtn {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
+    margin: 22px;
 }
-
+#actionbtn .tombol:hover {
+    box-sizing: border-box;
+    transform: scale(1.5,1.5);
+  }
+  
+#actionbtn .tombol:focus {
+    box-sizing: border-box;
+    transform: scale(1.5,1.5);
+  }
+  
+#actionbtn .tombol:active {
+    box-sizing: border-box;
+    transform: scale(1.5,1.5);
+}
 .rightBar {
     margin-top: 0px;
     width: 100%;
