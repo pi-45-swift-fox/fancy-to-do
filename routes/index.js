@@ -1,10 +1,9 @@
 const router = require('express').Router()
 const todoRoute = require('./todoRoute')
-const UserController = require('../controllers/UserController')
-
+const userRoute = require('./userRoute')
+const thirdParty = require('./thirdPartyAPI')
 router.use('/todos', todoRoute)
-router.post('/register', UserController.register)
-router.post('/login', UserController.login)
-
+router.use('/', userRoute)
+router.use('/randomfacts', thirdParty)
 
 module.exports = router

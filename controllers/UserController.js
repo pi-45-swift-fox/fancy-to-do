@@ -1,9 +1,9 @@
 const { User } = require('../models')
 const bcrypt = require('bcryptjs')
-
+const jwt = require('jsonwebtoken')
 
 class UserController {
-    static async register(req, res) {
+    static async register(req, res, next) {
         try {
             const { email, password } = req.body
             const result = await User.create({
@@ -16,8 +16,8 @@ class UserController {
                 password: result.password
             })
 
-        } catch {
-            res.status(400).json('errors')
+        } catch (err) {
+            next(err);
         }
 
     }
@@ -35,18 +35,20 @@ class UserController {
             } else {
                 const result = bcrypt.compareSync(password, check.password)
                 if (!result) {
-                    res.status(400).json('invalid email or password')
+                    next('INVALID_ACCOUNT')
+                        // res.status(400).json('invalid email or password')
                 } else if (result) {
-                    // console.log({ id: check.id, email: check.email });
                     const token = jwt.sign({ id: check.id, email: check.email }, process.env.JWT_SECRET)
                     res.status(200).json({ token })
                 }
-
             }
         } catch {
-
+            next('INVALID_ACCOUNT')
+                // res.status(400).json('invalid email or password')
         }
     }
+
+
 }
 
 module.exports = UserController
