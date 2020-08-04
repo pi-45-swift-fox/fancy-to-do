@@ -1,5 +1,7 @@
 const {User}=require('../models')
 const bcrypt=require('bcrypt');
+const jwt=require('jsonwebtoken')
+const env=require('dotenv').config()
 
 class Controller{
     static register(req,res){
@@ -20,19 +22,46 @@ class Controller{
             res.status(400).json(err)
         })
     }
-    static login(req,res){
-        User.findByPk({
-            where:{
-                name:req.body.email,
-                password:req.body.password
+    static async login(req,res){
+
+        try{
+            const userData = await User.findOne({
+                                            where:{
+                                                name:req.body.email,
+                                            }
+                                        })
+            const verified=bcrypt.compareSync(req.body.password,userData.password)
+            if(verified){
+                const token=jwt.sign({name:userData.name},process.env.JWT_SECRET)
+                 res.status(200).json({email:userData.name,token:token})
             }
-        })
-        .then(data=>{
-            res.send(200).json({user:data.user})
-        })
-        .catch(err=>{
-            res.send(400).json(err)
-        })
+            else{
+                        res.status(401).json({massage:'Password is Incorrect'})
+                    }
+        }catch(err){
+         res.status(500).json(err)
+
+        }
+
+        // User.findOne({
+        //     where:{
+        //         name:req.body.email,
+        //     }
+        // })
+        // .then(data=>{
+        //     const verified=bcrypt.compareSync(req.body.password,data.password)
+
+        //     if(verified){
+        //         const token=jwt.sign({name:data.name},process.env.JWT_SECRET)
+        //         res.status(200).json({email:data.name,token:token})
+        //     }
+        //     else{
+        //         res.status(401).json({massage:'Password is Incorrect'})
+        //     }
+        // })
+        // .catch(err=>{
+        //     res.status(500).json(err)
+        // })
     }
 }
 module.exports=Controller

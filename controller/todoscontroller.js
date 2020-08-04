@@ -5,7 +5,8 @@ class Constroller{
     static postData(req,res){
         let obj={
             title:req.body.title,
-            description:req.body.description
+            description:req.body.description,
+            status:req.body.status
         }
         Todo.create(obj)
         .then(result=>{
@@ -59,11 +60,6 @@ class Constroller{
             return res.status(404).json({massage:'404 NOT FOUND'})
         })
     }
-    static register(req,res){
-        let obj={
-            
-        }
-        Todo.create()
-    }
+  
 }
 module.exports=Constroller
