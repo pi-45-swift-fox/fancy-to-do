@@ -23,7 +23,7 @@ class TodoController {
     }
 
     static getNew(req, res) {
-        res.render('new-todo');
+        // res.render('new-todo');
     }
 
     static postNew(req, res) {
@@ -52,7 +52,7 @@ class TodoController {
                 res.status(200).redirect('/todos');
             })
             .catch(err => {
-                res.status(404).json({ msg: 'Not found' });
+                res.status(500).json({ msg: err });
             })
     }
 
@@ -69,13 +69,11 @@ class TodoController {
             UserId: req.body.UserId
         };
 
-        res.json(data);
-
-        Todo.update(data, { where: { id: null/*+req.params.id*/ } })
+        Todo.update(data, { where: { id: +req.params.id } })
             .then(() => {
                 res.status(200).redirect('/todos');
             })
-            .then(err => {
+            .catch(err => {
                 res.status(404).json({ msg: 'Not found' });
             })
     }

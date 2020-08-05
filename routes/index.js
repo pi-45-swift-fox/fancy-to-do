@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { HomeController, TodoController, UserController } = require('../controllers');
-const { Auth } = require('../middlewares');
+const TodoRouter = require('./todo');
 
 // Home
 router.get('/', HomeController.main);
@@ -19,13 +19,6 @@ router.post('/users/send', UserController.send);
         
      */
 // Todos
-router.get('/todos', TodoController.main);
-router.get('/todos/add', TodoController.getNew);
-router.post('/todos/add', TodoController.postNew);
-    // Sub Todos
-router.get('/todos/:id', TodoController.detail);
-router.delete('/todos/:id/delete', Auth.checkUser, TodoController.delete);
-router.get('/todos/:id/edit', Auth.checkUser, TodoController.getEdit);
-router.post('/todos/:id/edit', Auth.checkUser, TodoController.postEdit);
+router.get('/todos', TodoRouter);
 
 module.exports = router;
