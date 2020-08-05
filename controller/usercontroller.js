@@ -21,7 +21,7 @@ class Controller{
             res.status(400).json(err)
         })
     }
-    static async login(req,res){
+    static async login(req,res,next){
 
         try{
             const userData = await User.findOne({
@@ -29,43 +29,28 @@ class Controller{
                                                 name:req.body.email,
                                             }
                                         })
-                                        //console.log(userData)
-            const verified=bcrypt.compareSync(req.body.password,userData.password)
-            if(verified){
-                const env=require('dotenv').config()
-
-                const token=jwt.sign({name:userData.name},process.env.JWT_SECRET)
-                 res.status(200).json({email:userData.name,token:token})
-                 console.log('bener kok')
+            if(!userData){
+                next({errorCode:'NOT_FOUND', message:`USER DOESN'T EXIST`})
             }
             else{
-                        res.status(401).json({massage:'Password is Incorrect'})
+                //console.log(userData)
+                    const verified=bcrypt.compareSync(req.body.password,userData.password)
+                    if(verified){
+
+                    const token=jwt.sign({name:userData.name},process.env.JWT_SECRET)
+                    res.status(200).json({email:userData.name,token:token})
+                    console.log('bener kok')
                     }
+                    else{
+                    res.status(401).json({massage:'Password is Incorrect'})
+                    }
+
+                }
         }catch(err){
             console.log(err)
          res.status(500).json({msg:'Error'})
 
         }
-
-        // User.findOne({
-        //     where:{
-        //         name:req.body.email,
-        //     }
-        // })
-        // .then(data=>{
-        //     const verified=bcrypt.compareSync(req.body.password,data.password)
-
-        //     if(verified){
-        //         const token=jwt.sign({name:data.name},process.env.JWT_SECRET)
-        //         res.status(200).json({email:data.name,token:token})
-        //     }
-        //     else{
-        //         res.status(401).json({massage:'Password is Incorrect'})
-        //     }
-        // })
-        // .catch(err=>{
-        //     res.status(500).json(err)
-        // })
     }
 }
 module.exports=Controller

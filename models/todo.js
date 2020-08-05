@@ -17,12 +17,39 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Todo.init({
-    title: DataTypes.STRING,
-    description: DataTypes.STRING,
-    status: DataTypes.STRING,
+    title: {
+      allowNull:false,
+      type:DataTypes.STRING, 
+      validate:
+      {
+        notNull:{
+          msg:'Please enter the Title'
+        }
+    }
+    },
+    description: {
+      type:DataTypes.STRING,
+      allowNull:false,
+      validate:{
+        notNull:{
+          msg:'Please enter the Description'
+        }
+      }},
+    status: {
+      type:DataTypes.STRING,
+      allowNull:false,
+      validate:{
+        notNull:{
+          msg:'Please enter the Status'
+        }
+      }},
     due_date: {
       type:DataTypes.DATE,
+      allowNull:false,
       validate:{
+        notNull:{
+          msg:'Please enter the due_date'
+        },
         checkDate(value){
           if(value>new Date()){
             return (`Date should not higher than today's date`)
