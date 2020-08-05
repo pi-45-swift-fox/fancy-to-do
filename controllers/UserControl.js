@@ -4,40 +4,43 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
 class UserController {
-    static register(req, res) {
+    static register(req, res, next) {
         const encryptPass = bcrypt.hashSync(req.body.password, 10)
-        let obj = {
+        let user = {
             email: req.body.email,
             password: encryptPass
         }
-        User.create(obj)
+        User.create(user)
             .then(data => res.status(201).json(data))
-            .catch(err => res.status(400).json(err))
+            .catch(err => next(err))
     }
 
-    static login(req,res) {
+    static login(req,res, next) {
         User.findOne({
             where: {
                 email: req.body.email
             }
         })
             .then(user => {
-                if(!user) return res.status(400).json({message: 'username or password is incorrect'})
-                const verified = bcrypt.compareSync(req.body.password, user.password)
-                if(verified) {
-                    const token = jwt.sign({id: user.id, email: user.email, }, process.env.SECRET)
-                    res.status(200).json({user, token})
+                if(!user) {
+                    next({errorCode: 'NOT_FOUND_USER', message: 'username or password is incorrect'})
                 } else {
-                    res.status(400).json({message: 'username or password is incorrect'})
+                    const verified = bcrypt.compareSync(req.body.password, user.password)
+                    if(verified) {
+                        const token = jwt.sign({id: user.id, email: user.email, }, process.env.SECRET)
+                        res.status(200).json({user, token})
+                    } else {
+                        next({errorCode: 'NOT_FOUND_USER', message: 'username or password is incorrect'})
+                    }
                 }
             })
-            .catch (err => res.status(500).json(err))
+            .catch (err => next(err))
     }
 
-    static show(req, res) {
+    static show(req, res, next) {
         User.findAll()
             .then(user => res.status(200).json(user))
-            .catch(err => res.status(500).json(err))
+            .catch(err => next(err))
     }
 }
 

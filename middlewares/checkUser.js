@@ -4,12 +4,12 @@ function checkUser(req, res, next) {
     Todo.findByPk(req.params.id)
         .then(todo => {
             if(req.userLogin.dataValues.id !== todo.UserId) {
-                res.status(401).json({message: 'not User'})
+                next({errorCode: 'INVALID_ACCOUNT', message: 'not user'})
             } else {
                 next()
             }
         })
-        .catch(err => res.status(500).json(err))
+        .catch(err => next(err))
 }
 
 module.exports = checkUser
