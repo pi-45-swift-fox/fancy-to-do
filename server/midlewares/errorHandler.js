@@ -16,6 +16,10 @@ function errorHandler (err, req, res, next) {
         case "EmptyField":
             res.status(err.status).json(err.message)
         break;
+        case "ValidationErrorItem":
+            console.log('sini dong');
+            res.status(err.status).json(err.message)
+        break;
         case "Unauthenticated":
             res.status(err.status).json({message: err.message})
         break;

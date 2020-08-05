@@ -119,8 +119,9 @@ body {
 }
 
 .content-body {
-    margin-top: 60px;
-    margin-left: 20px;
+    margin: auto;
+    margin-left: 15%;
+    overflow: scroll;
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
@@ -148,8 +149,9 @@ body {
 
 #actionbtn {
     display: flex;
-    justify-content: space-between;
-    margin: 22px;
+    justify-content: space-around;
+    margin: 15px;
+    margin-left: -1%;
 }
 #actionbtn .tombol:hover {
     box-sizing: border-box;

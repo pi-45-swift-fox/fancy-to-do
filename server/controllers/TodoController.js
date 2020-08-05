@@ -1,8 +1,10 @@
 const { Todo } = require('../models')
 const { User } = require('../models')
+const mailSent = require('../helpers/mailgun')
 
 class TodoController {
     static create (req, res, next) {
+        let data;
         const { title, description, status, Due_date } = req.body
         Todo.create({
             title,
@@ -12,7 +14,15 @@ class TodoController {
             UserId: req.UserId
         })
             .then(created => {
-                return res.status(201).json(created)
+                // mailSent(created)
+                data = created
+                res.status(201).json(created)
+                return User.findOne({
+                    where: {id: created.UserId}
+                })
+            })
+            .then(result => {
+                mailSent({user: result.dataValues, data: data})
             })
             .catch(err => {
                 console.log(err);
@@ -23,7 +33,7 @@ class TodoController {
         Todo.findAll({
             include: [User],
             order: [
-                ['id', 'asc']
+                ['createdAt', 'desc']
             ]
         })
             .then(todos => {

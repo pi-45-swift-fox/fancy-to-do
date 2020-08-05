@@ -1,11 +1,12 @@
 ## Fancy Todo
-    To Do Fancy API - a portofolio project for Hacktiv8 Phase 2. This app has:
-    RESTful endpoint for Todo CRUD Operation Used Technology: 
+    To Do Fancy API - a portofolio project for Hacktiv8 Phase 2.  This app has RESTful endpoint for User and Todo Operation Used Technology: 
         * Express Js
         * Sequelize
         * Postgres
         * Json Web Token
         * Bcrypt JSON Formated Response
+    When you create a new Todo, you will be notice on your authorized email on this app. This feature using technology:
+        * mailgun (limited recipients)
 
 ## RESTful endpoints
     * GET /todos

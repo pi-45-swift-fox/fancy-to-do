@@ -52,7 +52,6 @@ function logout(event) {
     localStorage.clear()
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function() {
-        console.log('User signed out.');
     });
     Toast.fire({
         icon: 'success',
@@ -67,6 +66,10 @@ function homepage() {
     $('#nav').show()
     $('.loginpage').hide()
     $('.registerpage').hide()
+    let items = $('.list-wrapper .list-item')
+    let numItems = items.length
+    let perPage = 9
+    items.slice(perPage).hide()
     showTodo()
     closeNav()
 }
@@ -168,54 +171,51 @@ function showTodo() {
             }
         })
         .done(result => {
-            console.log(result, 'ini datanya bro<');
+            // console.log(result);
             $('.content-body').empty()
             for (i in result) {
-                console.log(result[i].UserId, 'ini datanya bro<');
                 let monthName = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
                 let date = new Date(result[i].Due_date)
                 let day = date.getDate()
                 let monthVal = date.getMonth()
                 let month = monthName[monthVal]
                 let year = date.getFullYear()
+                // console.log(result[i].User.id, 'ini id User');
+                // console.log(result[i].UserId, 'ini UserId');
+                // if ()
                 $('.content-body').append(`
-                <div id="todo-card">
-                <h2 style="color: black;">${result[i].title}</h1>
-                <h4 style="color: black;">${result[i].description}</h3>
-                <h4 style="color: black;">status: ${result[i].status}</h3>
-                <h4 style="color: black;">Due Date : ${day} ${month} ${year}</h3>
-                <h4 id="author" style="color: black; margin-bottom: 20px">By : ${result[i].User.email}</h3>
-                <div id="actionbtn">
-                <a style="color: lightskyblue;" href="#" onclick="editTodo(${result[i].id})">
-                    <div class="tombol">
-                        <img style="margin-left: 10%;" src="https://img.icons8.com/pastel-glyph/40/000000/edit.png"/>
-                        <h5 style="margin-left: 31%;">Edit</h5>
+                <div class= "list-wrapper">
+                    <div class= "list-item">
+                    <div id="todo-card">
+                    <h2 style="color: black;">${result[i].title}</h1>
+                    <h4 style="color: black;">${result[i].description}</h3>
+                    <h4 style="color: black;">status: ${result[i].status}</h3>
+                    <h4 style="color: black;">Due Date : ${day} ${month} ${year}</h3>
+                    <h4 id="author" style="color: black; margin-bottom: 20px">By : ${result[i].User.email}</h3>
+                    <div id="actionbtn">
+                    <a style="color: lightskyblue;" href="#" onclick="editTodo(${result[i].id})">
+                        <div class="tombol">
+                            <img style="margin-left: 10%;" src="https://img.icons8.com/pastel-glyph/40/000000/edit.png"/>
+                            <h5 style="margin-left: 31%;">Edit</h5>
+                        </div>
+                    </a> 
+                    <a style="color: lightskyblue;" href="#" onclick="deleteTodo(${result[i].id})">
+                        <div class="tombol">
+                            <img style="margin-left: 10%;" src="https://img.icons8.com/material-rounded/40/000000/delete-forever.png"/>
+                            <h5>Delete</h5>
+                        </div>
+                    </a>
+                    <a style="color: lightskyblue;" href="#" onclick="getQr('${result[i].title + ':' + result[i].description}')">
+                        <div class="tombol">
+                            <img style="margin-left: 10%;" src="https://img.icons8.com/wired/40/000000/qr-code.png"/>
+                            <h5>Get QR</h5>
+                        </div>
+                    </a>
                     </div>
-                </a> 
-                <a style="color: lightskyblue;" href="#" onclick="deleteTodo(${result[i].id})">
-                    <div class="tombol">
-                        <img style="margin-left: 10%;" src="https://img.icons8.com/material-rounded/40/000000/delete-forever.png"/>
-                        <h5>Delete</h5>
                     </div>
-                </a>
-                <a style="color: lightskyblue;" href="#" onclick="getQr('${result[i].title + ':' + result[i].description}')">
-                    <div class="tombol">
-                        <img style="margin-left: 10%;" src="https://img.icons8.com/wired/40/000000/qr-code.png"/>
-                        <h5>Get QR</h5>
                     </div>
-                </a>
-                <a style="color: lightskyblue;" href="#" onclick="send('${result[i].title + ':' + result[i].description}')">
-                    <div class="tombol">
-                        <img style="margin-left: 10%;" src="https://img.icons8.com/material/40/000000/important-mail.png"/>
-                        <h5>Sent Mail</h5>
-                    </div>
-                </a>
-                </div>
                 </div>
                 `)
-                if (result[i].UserId == result.UserId) {
-                    console.log(result[i].UserId, req.UserId, 'sini woi');
-                }
             }
         })
         .fail(err => {
@@ -272,29 +272,29 @@ function send(input) {
                 description,
             }
             console.log(data);
-            $.ajax({
-                    method: 'PUT',
-                    url: baseUrl + '/todos/' + id,
-                    headers: {
-                        access_token: localStorage.access_token
-                    },
-                    data
-                })
-                .done((result) => {
-                    if (result) {
-                        showTodo()
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success Update Todo'
-                        })
-                    }
-                })
-                .fail(err => {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'failed Update Todo'
-                    })
-                })
+            // $.ajax({
+            //         method: 'PUT',
+            //         url: baseUrl + '/todos/' + id,
+            //         headers: {
+            //             access_token: localStorage.access_token
+            //         },
+            //         data
+            //     })
+            //     .done((result) => {
+            //         if (result) {
+            //             showTodo()
+            //             Swal.fire({
+            //                 icon: 'success',
+            //                 title: 'Success Update Todo'
+            //             })
+            //         }
+            //     })
+            //     .fail(err => {
+            //         Swal.fire({
+            //             icon: 'error',
+            //             title: 'failed Update Todo'
+            //         })
+            //     })
 
         }
     })
@@ -345,7 +345,8 @@ function add() {
                     .done((result) => {
                         Swal.fire({
                             icon: 'success',
-                            title: 'Success add new Todo'
+                            title: 'Success add new Todo',
+                            text: 'and sent it to your email'
                         })
                         auth()
                     })

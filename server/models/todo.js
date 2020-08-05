@@ -52,7 +52,8 @@ module.exports = (sequelize, DataTypes) => {
         notNull: {
           args: true,
           msg: 'Date Cannot be Empty'
-        }
+        },
+        isAfter: new Date().toString()
       }
     },
     UserId: DataTypes.INTEGER
