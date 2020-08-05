@@ -1,33 +1,39 @@
 const { Todo } = require('../models');
 
-class TodoController {
-    static main(req, res) {
+module.exports = class TodoController {
+    static main(req, res, next) {
         Todo.findAll()
             .then(data => {
-                res.status(200).send(data);
+                res.status(200).json(data);
             })
             .catch(err => {
-                console.log(err);
-                res.status(500).json({ msg: 'Something went wrong!' });
+                next({
+                    code: 500,
+                    type: 'todo',
+                    body: err
+                });
+                // console.log(err);
+                // res.status(500).json({ msg: 'Something went wrong!' });
             })
     }
 
     static detail(req, res) {
         Todo.findByPk(+req.params.id)
             .then(data => {
-                res.status(200).send(data);
+                res.status(200).json(data);
             })
             .catch(err => {
-                res.status(404).json({ msg: 'Not found' });
+                next({
+                    code: 404,
+                    type: 'todo',
+                    body: err
+                });
+                // res.status(404).json({ msg: 'Not found' });
             })
     }
 
-    static getNew(req, res) {
-        // res.render('new-todo');
-    }
-
-    static postNew(req, res) {
-        let data = {
+    static new(req, res) {
+        let todo = {
             title: req.body.title,
             description: req.body.description,
             status: req.body.status,
@@ -35,14 +41,19 @@ class TodoController {
             UserId: req.body.UserId
         };
 
-        Todo.create(data)
+        Todo.create(todo)
             .then(data => {
                 res.status(201).json(data);
                 // res.redirect('/');
             })
             .catch(err => {
-                console.log(err);
-                res.status(500).json({ msg: 'Something went wrong!' });
+                next({
+                    code: 500,
+                    type: 'todo',
+                    body: err
+                });
+                // console.log(err);
+                // res.status(500).json({ msg: 'Something went wrong!' });
             })
     }
 
@@ -52,16 +63,17 @@ class TodoController {
                 res.status(200).redirect('/todos');
             })
             .catch(err => {
-                res.status(500).json({ msg: err });
+                next({
+                    code: 500,
+                    type: 'todo',
+                    body: err
+                });
+                // res.status(500).json({ msg: err });
             })
     }
 
-    static getEdit(req, res) {
-        res.render('edit-todo');
-    }
-
-    static postEdit(req, res) {
-        let data = {
+    static edit(req, res) {
+        let todo = {
             title: req.body.title,
             description: req.body.description,
             status: req.body.status,
@@ -69,14 +81,17 @@ class TodoController {
             UserId: req.body.UserId
         };
 
-        Todo.update(data, { where: { id: +req.params.id } })
+        Todo.update(todo, { where: { id: +req.params.id } })
             .then(() => {
                 res.status(200).redirect('/todos');
             })
             .catch(err => {
-                res.status(404).json({ msg: 'Not found' });
+                next({
+                    code: 404,
+                    type: 'todo',
+                    body: error
+                });
+                // res.status(404).json({ msg: 'Not found' });
             })
     }
 }
-
-module.exports = TodoController;

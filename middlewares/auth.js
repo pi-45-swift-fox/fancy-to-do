@@ -22,7 +22,7 @@ class Auth {
             next({
                 code: 409,
                 type: 'token',
-                body: err
+                body: error
             });
             // console.log(error);
             // res.status(500).json({ msg: 'Unable to authenticate' });
@@ -44,6 +44,11 @@ class Auth {
             }
 
         } catch (error) {
+            next({
+                code: 403,
+                type: 'token',
+                body: error
+            });
             // console.log(error);
             // res.status(500).json({ msg: 'Something went wrong!' });
         }

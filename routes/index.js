@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { HomeController, TodoController, UserController } = require('../controllers');
+const { HomeController, UserController } = require('../controllers');
 const TodoRouter = require('./todo');
 
 // Home
