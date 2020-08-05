@@ -85,7 +85,6 @@ function login(event) {
         })
         .done(data => {
             localStorage.setItem('access_token', data.access_token)
-
             Toast.fire({
                 icon: 'success',
                 title: 'Logged in successfully'
@@ -169,9 +168,10 @@ function showTodo() {
             }
         })
         .done(result => {
-            console.log(result);
+            console.log(result, 'ini datanya bro<');
             $('.content-body').empty()
             for (i in result) {
+                console.log(result[i].UserId, 'ini datanya bro<');
                 let monthName = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
                 let date = new Date(result[i].Due_date)
                 let day = date.getDate()
@@ -183,7 +183,8 @@ function showTodo() {
                 <h2 style="color: black;">${result[i].title}</h1>
                 <h4 style="color: black;">${result[i].description}</h3>
                 <h4 style="color: black;">status: ${result[i].status}</h3>
-                <h4 style="color: black; margin-bottom: 20px">Due Date : ${day} ${month} ${year}</h3>
+                <h4 style="color: black;">Due Date : ${day} ${month} ${year}</h3>
+                <h4 id="author" style="color: black; margin-bottom: 20px">By : ${result[i].User.email}</h3>
                 <div id="actionbtn">
                 <a style="color: lightskyblue;" href="#" onclick="editTodo(${result[i].id})">
                     <div class="tombol">
@@ -212,6 +213,9 @@ function showTodo() {
                 </div>
                 </div>
                 `)
+                if (result[i].UserId == result.UserId) {
+                    console.log(result[i].UserId, req.UserId, 'sini woi');
+                }
             }
         })
         .fail(err => {
@@ -242,7 +246,59 @@ function getQr(input) {
 }
 
 function send(input) {
-    console.log(input);
+    Swal.fire({
+        title: 'Your QR Todo',
+        html: `
+        <div id="qrcode">
+            <img id="qr" style="width: 150px; height: 150px;">
+        </div>
+        <br>
+        <div>
+            <label>Your Email</label>
+            <input id="swal-input1-send" class="swal4-input" placeholder="email">
+            <br>
+            <label>Description</label>
+            <input id="swal-input2-send" class="swal1-input" placeholder="description">
+        </div>
+        `,
+        focusConfirm: false,
+        showCancelButton: true,
+        preConfirm: () => {
+            console.log('here preconfirm');
+            let email = $('#swal-input1-send').val()
+            let description = $('#swal-input2-send').val()
+            let data = {
+                email,
+                description,
+            }
+            console.log(data);
+            $.ajax({
+                    method: 'PUT',
+                    url: baseUrl + '/todos/' + id,
+                    headers: {
+                        access_token: localStorage.access_token
+                    },
+                    data
+                })
+                .done((result) => {
+                    if (result) {
+                        showTodo()
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success Update Todo'
+                        })
+                    }
+                })
+                .fail(err => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'failed Update Todo'
+                    })
+                })
+
+        }
+    })
+    $('#qr').attr('src', `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${input}`)
 }
 
 function add() {
@@ -271,27 +327,36 @@ function add() {
                 status,
                 Due_date
             }
-            $.ajax({
-                    method: 'POST',
-                    url: `${baseUrl}/todos`,
-                    headers: {
-                        access_token: localStorage.access_token
-                    },
-                    data
+            if (!title || !description || !status || !Due_date) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Failed add new Todo',
+                    text: 'Please fill all fields'
                 })
-                .done((result) => {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success add new Todo'
+            } else {
+                $.ajax({
+                        method: 'POST',
+                        url: `${baseUrl}/todos`,
+                        headers: {
+                            access_token: localStorage.access_token
+                        },
+                        data
                     })
-                    auth()
-                })
-                .fail((err) => {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Failed add new Todo'
+                    .done((result) => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success add new Todo'
+                        })
+                        auth()
                     })
-                })
+                    .fail(err => {
+                        console.log(err, 'ini err broo <<');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Failed add new Todo'
+                        })
+                    })
+            }
         }
     })
 }
@@ -314,9 +379,7 @@ function deleteTodo(id) {
                         access_token: localStorage.access_token
                     }
                 })
-            } else {
-
-            }
+            } 
         })
         .then((data) => {
             if (data) {
@@ -328,11 +391,11 @@ function deleteTodo(id) {
             auth()
         })
         .catch(err => {
-            Swal.fire(
-                'Failed!',
-                'Cannot delete Todo.',
-                'error'
-            )
+            Swal.fire({
+                icon: 'error',
+                title: 'Cannot Delete Todo',
+                text: err.responseJSON.message
+            })
         })
 }
 
@@ -396,10 +459,16 @@ function editTodo(id) {
                                 })
                             }
                         })
+                        .fail(err => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'failed Update Todo'
+                            })
+                        })
+
                 }
             })
         })
         .fail((err) => {
-            console.log(err);
         })
 }

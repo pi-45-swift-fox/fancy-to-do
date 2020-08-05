@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Lateef&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Pangolin&display=swap');
 body {
+    position: relative;
     display: flex;
     flex-direction: column;
     margin: 0;
@@ -12,7 +13,42 @@ body {
     background-size: cover;
     font-family: 'Lateef', cursive;
 }
-
+.footer {
+    position: absolute;
+    bottom: -8%;
+    width: 100%;
+    height: 2.5rem; 
+    background-color: black;
+    color: white;
+    text-align: center;
+    height: 7%;
+ }
+#isi{
+    margin-top: -1.5%;
+}
+#sosmed{
+    margin-top: -11.5%;
+}
+#me{
+    margin-top: -5%;
+}
+#sosmed h3{
+    margin-left: -85%;
+    margin-top: 11%;
+}
+#sosmed ul {
+    display: flex;
+    color: white;
+    flex-direction: row;
+    position: absolute;
+    transition: 0.1s;
+    margin-top: -3%;
+    margin-left: 12%;
+}
+#sosmed ul li {
+    list-style: none;
+    justify-content: space-between;
+}
 .obs {
     height: 50px;
 }

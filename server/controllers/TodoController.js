@@ -1,4 +1,5 @@
 const { Todo } = require('../models')
+const { User } = require('../models')
 
 class TodoController {
     static create (req, res, next) {
@@ -20,6 +21,7 @@ class TodoController {
     }
     static list (req, res, next) {
         Todo.findAll({
+            include: [User],
             order: [
                 ['id', 'asc']
             ]

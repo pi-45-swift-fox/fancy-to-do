@@ -1,7 +1,7 @@
 function errorHandler (err, req, res, next) {
     let status = 500;
     let message = 'internal server error';
-    console.log(err.name, 'ini di error handler');
+    console.log(err, 'ini di error handler');
     switch(err.name) {
         case "NotFound" :
             res.status(err.status).json({message: err.message})
