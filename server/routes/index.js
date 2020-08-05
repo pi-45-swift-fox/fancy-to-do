@@ -1,9 +1,10 @@
 const router = require('express').Router();
 const { UserController } = require('../controllers');
 const TodoRouter = require('./todo');
+const { Auth } = require('../middlewares');
 
 // Home
-router.get('/', UserController.detail);
+router.get('/', Auth.check, UserController.detail);
 router.get('/users', UserController.main);
 router.post('/login', UserController.login);
 router.post('/register', UserController.register);
