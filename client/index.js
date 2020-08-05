@@ -36,9 +36,9 @@ if (!localStorage.token) {
         }
     })
     .done(data => {
-        let res = "<table>";
+        let res = '<table border="1">';
         data.Todos.forEach(e => {
-            res += `<tr> <td> ${e.title} </td> <td> ${e.description} </td> <td> ${e.status} </td> </tr>`;            
+            res += `<tr> <td> ${e.id} </td> <td> ${e.title} </td> <td> ${e.description} </td> <td> ${e.status} </td> </tr>`;            
         });
         res += '</table>';
         $("#result").html(res);
