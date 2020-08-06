@@ -10,24 +10,67 @@
 </head>
 <body>
     <div class="container-sm">
-        <form action="" method="POST" id="formSignIn">
-            <div class="form-group">
-                <label for="exampleInputEmail1">Email address</label>
-                <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-            </div>
-            <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                <input type="password" class="form-control" id="password">
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-
-
-
-
-    </div>
         
+
+
+        <div id="formSignIn">
+            <form action="" method="POST">
+                <h2>Log in</h2>
+                <div class="form-group input-group-md">
+                    <label for="exampleInputEmail1">Email address</label>
+                    <input type="email" class="form-control" id="emailLogin" aria-describedby="emailHelp">
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Password</label>
+                    <input type="password" class="form-control" id="passwordLogin">
+                </div>
+                <button type="submit" class="btn btn-danger">Submit</button>
+                <button id="RegisterButton"> Register</button>
+            </form>
+        </div>
+        
+            <div id="formRegister">
+                <form action="" method="POST">
+                    <h2>Register</h2>
+                    <div class="form-group input-group-md">
+                        <label for="exampleInputEmail1">Email address</label>
+                        <input type="email" class="form-control" id="emailRegister" aria-describedby="emailHelp">
+                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input type="password" class="form-control" id="passwordRegister">
+                    </div>
+                    <button type="submit" class="btn btn-danger">Submit</button>
+                    <button id="RegisterButton"> Register </button>
+                </form>
+            </div>
+
+        <div id="homepage">
+            <button class="btn btn-warning" id="logout">logout</button>
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Due Date</th>
+                        <th scope="col">User Email</th>
+                        <th scope="col">User Id</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+        
+        <div id="error">
+            
+        </div>
+        </div>
         
         <!-- ini script bootstrap -->
     <!-- JS, Popper.js, and jQuery -->
@@ -38,25 +81,8 @@
 
     <!-- ini script jquery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-    <script>
-        $('#formSignIn').submit(function (event){
-            event.preventDefault() 
-            // ini untuk supaya gak ke FORM ACTION
-
-            const email = $('#email').val()
-            //ambil value dari id EMAIL
-
-            const password = $('#password').val()
-            //ambil value dari id password
-            console.log(email,password)
-
-            
-            $('#email').val('')
-            $('#password').val('')
-        })
-
-    </script>
+    <!-- ini script index.js -->
+    <script src="index.js"></script>
 
 </body>
 </html>
