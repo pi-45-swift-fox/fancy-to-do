@@ -1,5 +1,5 @@
-let baseUrl = 'http://localhost:3000'
-// let baseUrl = 'https://fathomless-wildwood-30178.herokuapp.com'
+// let baseUrl = 'http://localhost:3000'
+let baseUrl = 'https://fathomless-wildwood-30178.herokuapp.com'
 
 $(document).ready(() => {
     auth()
@@ -107,7 +107,7 @@ function onSignIn(googleUser) {
     let id_token = googleUser.getAuthResponse().id_token;
     $.ajax({
             method: 'POST',
-            url: baseUrl + '/googlesign',
+            url: baseUrl + '/googleSign',
             data: {
                 id_token
             }
