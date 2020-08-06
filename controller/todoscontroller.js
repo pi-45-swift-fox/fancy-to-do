@@ -15,12 +15,7 @@ class Constroller{
             res.status(201).json(result)
         })
         .catch(err=>{
-            // var massage='Internal Server Error'
-            // if(err.name='SequelizeValidationError'){
-            //     massage=err.name
-            // }
-            // console.log(err)
-            // res.status(500).json({msg:massage})
+            console.log(err)
             next(err)
         })
     }

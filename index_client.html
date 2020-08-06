@@ -11,7 +11,7 @@
         <h1>Welcome to Todo App</h1>
     </div>
     <div>
-        <form action="#" method="post">
+        <form action="#" method="post" id="submitForm">
             <label for="email">Email</label><br>
             <input type="email" name="email" id="email" required><br>
             <label for="password">Password</label><br>
@@ -27,11 +27,13 @@
 
     </script>
     <script>
-        $.ajax ('http://localhost:3000/todos',{
+        $.ajax ({
+            url:'http://localhost:3000/todos',
             method:'GET'
         })
-        .done(function(data){
-            console.log('ini data todo',data[0])
+        .done(function(){
+            alert('Success')
+            console.log('ini data todo',data)
         })
         .fail(function(err){
             console.log(err)
@@ -39,6 +41,11 @@
         .always(function(){
             console.log('fungsi ini selesai')
         })
+        // $('#submitForm').submit(function(event){
+        //     event.preventDefault()
+        //     console.log($('#email').val())
+        //     console.log($('#password').val())
+        // })
     </script>
 </body>
 </html>

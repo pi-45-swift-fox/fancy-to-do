@@ -1,5 +1,5 @@
 module.exports=function(err,req,res,next){
-    console.log(err)
+    console.log(err,'>> ini errornya')
     var massage='Internal Server Error'
     var statusCode=500
     let errorCode='INTERNAL_SERVER_ERROR'
@@ -13,5 +13,5 @@ module.exports=function(err,req,res,next){
         errorCode=err.errorCode
         statusCode=404
     }
-    return res.status(statusCode).json({massage:massage})
+    return res.status(statusCode).json({error_code:errorCode,massage:massage})
 }

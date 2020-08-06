@@ -1,7 +1,7 @@
 const route = require('express').Router()
 const todosroute = require('./todos-route')
 const jwt=require('jsonwebtoken')
-
+const isUniqueEmail=require('../middleware/uniqueemail')
 route.use('/todos',todosroute)
 // route.use('/',(req,res)=>{
 //     let password=req.body.password
@@ -13,7 +13,7 @@ route.use('/todos',todosroute)
 const Constroller = require('../controller/usercontroller')
 
 
-route.post('/register',Constroller.register)
+route.post('/register',isUniqueEmail,Constroller.register)
 route.post('/login',Constroller.login)
 
 module.exports=route

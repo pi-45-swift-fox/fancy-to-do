@@ -3,22 +3,22 @@ const bcrypt=require('bcrypt');
 const jwt=require('jsonwebtoken')
 
 class Controller{
-    static register(req,res){
-        const encryptedPassword=bcrypt.hashSync(req.body.password,10)
+    static register(req,res,next){
         let obj={
            name:req.body.email,
-           password:encryptedPassword
+           password:req.body.password
         }
         User.create(obj)
         .then(data=>{
             res.status(201).json({
                 id:data.id,
-                email:data.email,
+                email:data.name,
                 password:data.password
             })
         })
         .catch(err=>{
-            res.status(400).json(err)
+            next(err)
+            // res.status(400).json(err)
         })
     }
     static async login(req,res,next){
@@ -42,13 +42,13 @@ class Controller{
                     console.log('bener kok')
                     }
                     else{
-                    res.status(401).json({massage:'Password is Incorrect'})
+                        res.status(401).json({massage:'Password is Incorrect'})
                     }
 
                 }
         }catch(err){
             console.log(err)
-         res.status(500).json({msg:'Error'})
+            res.status(500).json({msg:'Error'})
 
         }
     }
