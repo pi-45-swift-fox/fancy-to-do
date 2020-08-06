@@ -13,7 +13,7 @@ class Controller{
             }
             // console.log(newUser)
             const data = await User.create(newUser)
-            res.status(201).json({message:`${data.email} is created and its role is ${data.role}`})
+            res.status(201).json({message:`data id: ${data.id}, ${data.email} is created and its role is ${data.role}`})
         }
         catch(err){
             next(err)
@@ -34,7 +34,7 @@ class Controller{
                 if(password){
                     const token = jwt.sign({id: data.id, name: data.email, role: data.role}, process.env.JWT_SECRET)
                     // console.log(data.id, data.email, data.role)
-                    res.status(200).json({user: data.email, role: data.role, token })
+                    res.status(200).json({id: data.id, user: data.email, role: data.role, token })
                 }else{
                     next({errorCode : 'INCORRECT_USER'})
                 }

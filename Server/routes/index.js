@@ -9,8 +9,7 @@ router.get('/tes', ThirdPartyAPI.anime)
 router.post('/register', UserController.register)
 router.post('/login', UserController.login)
 
-router.use(authenticate)
-router.use('/todos', todoRoutes)
+router.use('/todos',authenticate, todoRoutes)
 
 
 module.exports = router
