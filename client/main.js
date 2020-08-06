@@ -1,5 +1,5 @@
-// let baseUrl = 'http://localhost:3000'
-let baseUrl = 'https://fathomless-wildwood-30178.herokuapp.com'
+let baseUrl = 'http://localhost:3000'
+// let baseUrl = 'https://fathomless-wildwood-30178.herokuapp.com'
 
 $(document).ready(() => {
     auth()
