@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <header><button id="logoutButton">Logout</button><button id="loginButton">Login</button><button id="registerButton">Register</button></header>
+    <div>
+        <h1>
+            Todo Apps
+        </h1>
+    </div>
+    <div id="content">
+        <p>Welcome to TodoApp</p><br>
+        <p>Set your own schedule effectively using TodoApp</p><br>
+        
+        <p>Silahkan Login/register</p>
+    </div>
+    
+    
+    <div id="registerForm">
+        <form method="post"  id="inputFormRegister" onsubmit="registerUser(event)">
+            <label for="">Email</label><br>
+            <input type="email" name="email" id="inputRegisterEmail" autocomplete="email"><br>
+            <label for="">Password</label><br>
+            <input type="password" name="password" autocomplete="current-password" id="inputRegisterPassword"><br>
+
+            
+                <button type="submit">Daftar</button>
+        </form>
+    </div>
+    <br>
+    <div id="loginForm">
+        <form  method="post" onsubmit="loginUser(event)">
+            <label for="">Email</label><br>
+            <input type="email" name="email" id="inputLoginEmail" autocomplete="email"><br>
+            <label for="">Password</label><br>
+            <input type="password" name="password" autocomplete="current-password" id="inputLoginPassword"><br>
+            <button type="submit">Login</button>
+
+        </form>
+    </div>
+    <div id="todos">
+        <h2 id="tableTitle">Todo List</h2> <br>
+        <button onclick="showAddTodoForm(event)">Add Todo to your list</button>
+        <table id="todoList" border="1">
+            <thead >
+                <td>Title</td>
+                <td>Description</td>
+                <td>Status</td>
+                <td>Due Date</td>
+                <td>Action</td>
+            </thead>
+        </table>
+
+
+    </div>
+    <div id="addTodo">
+        <form action="" method="post" >
+            <label for="">Title</label><br>
+            <input type="text" name="title" id="title"><br>
+            <label for="">Description</label><br>
+            <input type="text" name="description" id="description"><br>
+            <label for="">Status</label><br>
+            <select name="" id="status">
+                <option value="Done">Done</option>
+                <option value="Not Done" selected>Not Done</option>
+            </select><br>
+            <label for="">Due Date</label><br>
+            <input type="date" name="" id="due_date">
+            <button type="submit" onclick="addTodo(event)">Add</button>
+        </form>
+    </div>
+    <div id="updateTodo">
+        <form  method="post" >
+            <label for="">Title</label><br>
+            <input type="text" name="title" id="updTitle"><br>
+            <label for="">Description</label><br>
+            <input type="text" name="description" id="updDescription"><br>
+            <label for="">Status</label><br>
+            <select name="" id="updStatus">
+                <option value="Done" selected>Done</option>
+                <option value="Not Done">Not Done</option>
+            </select><br>
+            <label for="">Due Date</label><br>
+            <input type="date" name="" id="updDue_date">
+            <input type="hidden" name="" value="" id="todoIdSaver">
+            <button type="button" id="submitUpdTodo">Update</button>
+        </form>
+    </div>
+
+
+    <!-- Google-OAuth-Part -->
+    <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
+    <!-- Google-OAuth-Part -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="./main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+
+</body>
+</html>
