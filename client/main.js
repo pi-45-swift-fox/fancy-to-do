@@ -1,5 +1,5 @@
-// let baseUrl = 'http://localhost:3000'
-let baseUrl = 'https://fathomless-wildwood-30178.herokuapp.com'
+let baseUrl = 'http://localhost:3000'
+// let baseUrl = 'https://fathomless-wildwood-30178.herokuapp.com'
 
 $(document).ready(() => {
     auth()
@@ -7,22 +7,58 @@ $(document).ready(() => {
 
 function auth() {
     if (localStorage.access_token) {
+        $('#landingPage').hide()
         homepage()
+
     } else {
-        loginPage()
+        landingPage()
         $('#nav').hide()
         $('.page').hide()
+        $('#navigasi').show()
+
     }
+}
+
+function landingPage() {
+    $('.registerpage').hide()
+    $('.loginpage').hide()
+    $('#navigasi').hide()
+    $('#landingPage').show()
 }
 
 function loginPage() {
     $('.registerpage').hide()
+    $('#landingPage').hide()
     $('.loginpage').show()
+}
+
+function toLogin(event) {
+    event.preventDefault()
+    $('.registerpage').hide()
+    $('#landingPage').hide()
+    $('.loginpage').show()
+}
+
+function toRegister(event) {
+    event.preventDefault()
+    $('.registerpage').show()
+    $('#landingPage').hide()
+    $('.loginpage').hide()
+}
+
+function cancel(event) {
+    event.preventDefault()
+    $('.registerpage').hide()
+    $('.loginpage').hide()
+    $('#navigasi').hide()
+    $('#landingPage').hide()
+    auth()
 }
 
 function registerPage() {
     $('.loginpage').hide()
     $('.registerpage').show()
+    $('#landingPage').hide()
 }
 
 function openNav() {
@@ -49,7 +85,10 @@ function logout(event) {
     $('body').css('background-image', 'url(https://images.unsplash.com/photo-1595814304795-04e0ae903ae8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60)'); 
     event.preventDefault()
     closeNav()
+    $('#myRighNav').hide()
     localStorage.clear()
+    $('#landingPage').show()
+
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function() {
     });
@@ -61,9 +100,15 @@ function logout(event) {
 }
 
 function homepage() {
-    $('body').css('background-image', 'url(https://cdn.nevadaappeal.com/wp-content/uploads/sites/2/2019/11/Tile-NAP-Road9-1024x683.jpg)'); 
+    $('body').css('background-image', 'url(https://wallpapersite.com/images/pages/pic_h/15704.jpg)'); 
     $('.page').show()
     $('#nav').show()
+    $("#user").html(`
+        <div>
+            <h4>Welcome Back, ${localStorage.email}</h4>
+        </div>
+           
+    `);
     $('.loginpage').hide()
     $('.registerpage').hide()
     let items = $('.list-wrapper .list-item')
@@ -72,6 +117,8 @@ function homepage() {
     items.slice(perPage).hide()
     showTodo()
     closeNav()
+    $('#myRighNav').show()
+
 }
 
 function login(event) {
@@ -87,7 +134,9 @@ function login(event) {
             }
         })
         .done(data => {
-            localStorage.setItem('access_token', data.access_token)
+            console.log(data, '<data login');
+            localStorage.access_token = data.access_token
+            localStorage.email = data.email
             Toast.fire({
                 icon: 'success',
                 title: 'Logged in successfully'
@@ -145,7 +194,8 @@ function register(event) {
         })
         .done(data => {
             console.log(data);
-            localStorage.setItem('access_token', data.access_token)
+            localStorage.access_token = data.access_token
+            localStorage.email = data.email
             Toast.fire({
                 icon: 'success',
                 title: 'Registered successfully'
@@ -187,28 +237,34 @@ function showTodo() {
                 <div class= "list-wrapper">
                     <div class= "list-item">
                     <div id="todo-card">
-                    <h2 style="color: black;">${result[i].title}</h1>
-                    <h4 style="color: black;">${result[i].description}</h3>
+                    <h2 style="color: black; margin-bottom: 7%;">${result[i].title}</h1>
+                    <h4 style="color: black;">Description: ${result[i].description}</h3>
                     <h4 style="color: black;">status: ${result[i].status}</h3>
                     <h4 style="color: black;">Due Date : ${day} ${month} ${year}</h3>
                     <h4 id="author" style="color: black; margin-bottom: 20px">By : ${result[i].User.email}</h3>
                     <div id="actionbtn">
-                    <a style="color: lightskyblue;" href="#" onclick="editTodo(${result[i].id})">
+                    <a style="color: #a9a9a9;" href="#" onclick="editTodo(${result[i].id})">
                         <div class="tombol">
                             <img style="margin-left: 10%;" src="https://img.icons8.com/pastel-glyph/40/000000/edit.png"/>
                             <h5 style="margin-left: 31%;">Edit</h5>
                         </div>
                     </a> 
-                    <a style="color: lightskyblue;" href="#" onclick="deleteTodo(${result[i].id})">
+                    <a style="color: #a9a9a9;" href="#" onclick="deleteTodo(${result[i].id})">
                         <div class="tombol">
                             <img style="margin-left: 10%;" src="https://img.icons8.com/material-rounded/40/000000/delete-forever.png"/>
                             <h5>Delete</h5>
                         </div>
                     </a>
-                    <a style="color: lightskyblue;" href="#" onclick="getQr('${result[i].title + ':' + result[i].description}')">
+                    <a style="color: #a9a9a9;" href="#" onclick="getQr('${result[i].title + ':' + result[i].description}')">
                         <div class="tombol">
                             <img style="margin-left: 10%;" src="https://img.icons8.com/wired/40/000000/qr-code.png"/>
                             <h5>Get QR</h5>
+                        </div>
+                    </a>
+                    <a style="color: #a9a9a9;" href="#" onclick="invite('${result[i].title}')">
+                        <div class="tombol">
+                            <img style="margin-left:25%;" src="https://img.icons8.com/ios-glyphs/40/000000/add-user-group-man-man.png"/>
+                            <h5>Invite other's</h5>
                         </div>
                     </a>
                     </div>
@@ -226,6 +282,58 @@ function showTodo() {
                 })
             })
         })
+}
+
+function invite(text) {
+    console.log(text);
+    Swal.fire({
+        title: `
+        Invite Other`,
+        html: `
+        <div>
+            Todo Title: ${text}<br>
+            <br>
+            <label>Send To:</label>
+            <input id="swal-input" class="swal1-input" placeholder="email">
+        </div>
+        `,
+        focusConfirm: false,
+        showCancelButton: true,
+        preConfirm: () => {
+            console.log('here preconfirm');
+            let data = $('#swal-input').val()
+            let title = text
+            // console.log(mail);
+            $.ajax({
+                    method: 'post',
+                    url: baseUrl + '/sent',
+                    headers: {
+                        access_token: localStorage.access_token
+                    },
+                    data: {
+                        data,
+                        title
+                    }
+                })
+                .done((result) => {
+                    console.log(result);
+                    // if (result) {
+                    //     showTodo()
+                    //     Swal.fire({
+                    //         icon: 'success',
+                    //         title: 'Success Update Todo'
+                    //     })
+                    // }
+                })
+            //     .fail(err => {
+            //         Swal.fire({
+            //             icon: 'error',
+            //             title: 'failed Update Todo'
+            //         })
+            //     })
+
+        }
+    })
 }
 
 function getQr(input) {

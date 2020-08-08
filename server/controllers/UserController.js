@@ -18,7 +18,7 @@ class UserController {
                             email: user.email
                         }
                         let access_token = generateToken(userData)
-                        return res.status(200).json({access_token: access_token})
+                        return res.status(200).json({access_token: access_token, email: user.email})
                     } else {
                         throw {
                             name: "BadRequest",
@@ -50,7 +50,7 @@ class UserController {
                     email: newUser.email
                 }
                 let access_token = generateToken(userData)
-                return res.status(201).json({message: newUser, access_token: access_token})
+                return res.status(201).json({email: newUser.email, access_token: access_token})
             })
             .catch(err => {
                 console.log(err);

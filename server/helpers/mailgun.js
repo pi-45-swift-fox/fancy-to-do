@@ -1,7 +1,7 @@
 require("dotenv").config();
 
-const api_key = process.env.MAILGUN;
-const domain = 'sandboxa71fdfc5310346a3b877e2cfc5d4b1f8.mailgun.org';
+const api_key = process.env.MAILGUN_APIKEY;
+const domain = process.env.MAILGUN_DOMAIN;
 const mailgun = require('mailgun-js')({ apiKey: api_key, domain: domain });
 
 function mailSent(data) {

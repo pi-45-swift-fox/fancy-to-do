@@ -9,13 +9,46 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <meta name="google-signin-client_id" content="975105577426-qotddfclrc7l83los2ss14nbnpodilqk.apps.googleusercontent.com">
+    <meta name="google-signin-client_id" content="975105577426-40el3bb3hemse8grhupcq2k8mncjrpua.apps.googleusercontent.com">
     <link rel="stylesheet" href="./style.css" type="text/css">
     <title>FancyTodo</title>
 </head>
 
 <body>
-    <div class="header">
+    <section class="hero" id="landingPage">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 offset-md-1 col-md-11">
+                    <div class="swiper-container hero-slider">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide slide-content d-flex align-items-center">
+                                <div class="single-slide">
+                                    <h1 data-aos="fade-right" data-aos-delay="200">Fancy<br> Todo
+                                    </h1>
+                                    <h3 data-aos="fade-right" data-aos-delay="600">
+                                        <br>Built for Peoples<br>
+                                        Fancy Todo is a simple web to see other's todos from people arround the world on this web.
+                                        <br>Manage Your To Do Now.<br>
+                                        Anywhere, anytime. Let's Start Make Some Fancy Now!
+                                        <br>And Share it to Your Friends, Family, Or People Arround The World!
+                                        <br> You Will notified on your registered email when you start make some Todo.
+                                        <br>You Can get QR Code from your favorite Todo and send it to your email.
+                                        <br>Also, You can invite people who want to see your favorite todo.
+                                    </h3>
+                                    <a data-aos="fade-right" data-aos-delay="900" href="" class="aksi btn btn-primary" style="width: 32%;" onclick="toLogin(event)">Login</a>
+                                    <a data-aos="fade-right" data-aos-delay="900" href="" class="aksi btn btn-primary" style="width: 32%;" onclick="toRegister(event)">Register</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="texture"></div>
+        <div class="diag-bg"></div>
+    </section>
+    <div class="header" id="navigasi">
         <div id="nav">
             <div class="btn">
                 <button class="btn btn-info btn-lg " onclick="openNav()"><span class="glyphicon glyphicon-menu-hamburger" id="btnicon"></span></button>
@@ -24,7 +57,24 @@
         <div id="title">
             <h1>Fancy Todo</h1>
         </div>
-        <div id="ip-address"></div>
+        <div id="myRighNav" class="nav">
+            <div class="nav-item dropdown" style="left: -47%;">
+                <div class="nav-item dropdown">
+                    <a style="position: fixed;right: 5%;top: -0.5%;" class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <h5 id="user"></h5>
+                      <div>
+                        <h4 id="downicon" class="glyphicon glyphicon-triangle-bottom"></h4>
+                    </div> 
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a id="logoutbtn" href="#" onclick="logout(event)"><div>Logout</div></a>
+                    </div>
+                  </div>
+                <!-- <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a id="logoutbtn" href="#" onclick="logout(event)"><div style="margin-left: 33%;" >Logout</div></a>
+                </div> -->
+            </div>
+        </div>
     </div>
     <div class="obs"></div>
     <div class="loginpage">
@@ -41,7 +91,9 @@
                 <img src="https://img.icons8.com/metro/26/000000/forgot-password.png"/>
                 <input type="password" id="password-login" placeholder="password"><br><br>
                 <img src="https://img.icons8.com/material-sharp/26/000000/login-rounded-right.png"/>
-                <input type="submit" id="submitbtn" value="Login"><br><br>
+                <input type="submit" id="submitbtn" value="Login"  style="margin-bottom: 4%;"><br>
+                <img src="https://img.icons8.com/ios-filled/26/000000/circled-left-2.png"/>
+                <input type="button" id="submitbtn2" value="Cancel" onclick="cancel(event)" style="background-color: #c40000; color: white;"><br><br>
                 <a href="#" onclick="registerPage()" style="font-weight: 700;">Dont have an Account?</a>
                 <br>__________________________________<br>
                 <div class="social">
@@ -65,9 +117,10 @@
                 <img src="https://img.icons8.com/metro/26/000000/forgot-password.png"/>
                 <input type="password" id="password-register" placeholder="password"><br><br>
                 <img src="https://img.icons8.com/material-sharp/26/000000/login-rounded-right.png"/>
-                <input type="submit" id="submitbtn2" value="Register">
+                <input type="submit" id="submitbtn2" value="Register"  style="margin-bottom: 4%;"><br>
+                <img src="https://img.icons8.com/ios-filled/26/000000/circled-left-2.png"/>
+                <input type="button" id="submitbtn2" value="Cancel" onclick="cancel(event)" style="background-color: #c40000; color: white;">
                 <br><br>
-                <a href="#" onclick="loginPage()" style="font-weight: 700;">Have an Account?</a>
                 <br>__________________________________<br>
                 <div class="social">
                     <div class="g-signin2" id="g-loginbtn2" data-onsuccess="onSignIn"></div>
@@ -75,31 +128,27 @@
             </form>
         </div>
     </div>
-    <div class="page">
-        <div id="mySidenav" class="sidenav">
-            <a id="x" href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            <a id="homebtn" href="#">Home</a>
+    <div class="page vh-100 font-2">
+        <!-- <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Dropright
+          </button> -->
+        <div id="mySidenav" class="sidenav btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a id="x" href="javascript:void(0)" class="closebtn" onclick="closeNav()">&xlArr;</a>
+            <a id="homebtn" href="#" style="margin-bottom: 7px; margin-top: -16px;">Home</a>
             <a id="addbtn" href="#" onclick="add()">Add</a>
-            <a id="logoutbtn" href="#" onclick="logout(event)">Logout</a>
         </div>
-        <div class="content">
-            <!-- <h1>List</h1> -->
-            <div class="content-body"></div>
+        <div class="todo overflow-auto">
+            <div class="content bg-light" style="height: 560px; width: 79%; overflow: auto; margin: auto; margin-top: 3%;">
+                <div>
+                    <div>
+                        <h1 style="font-size: 20px; color: whitesmoke;">Feeds</h1>
+                        <hr style="border: 2px solid whitesmoke;">
+                    </div>
+                    <div class="content-body" data-spy="scroll" data-target="condtent" data-offset="0" ></div>
+                </div>    
+            </div>
         </div>
     </div>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-          <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-          </li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#">Next</a>
-          </li>
-        </ul>
-      </nav>
     <!-- <div class="footer">
         <div class="ftrcontent">
             <div id="isi">
