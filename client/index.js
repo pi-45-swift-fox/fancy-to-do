@@ -4,14 +4,20 @@ table = $('.append-todo'),
 mainTable = $('.table'),
 loginSubmit = $('#login-submit'),
 registerSubmit = $('#register-submit'),
-add = $('#add-todo'),
 login = $('#login'),
 register = $('#register'),
 username = $('#whoami'),
+add = $('#add-todo'),
+todoForm = $('#form-todo'),
+todoSubmit = $('#todo-submit'),
+main = $('#home'),
 logout = $('#logout');
 
 // Function
 function showHome() {
+    add.show();
+    todoForm.hide();
+    table.empty();
     username.text(`Hello, ${localStorage.username}`);
     logout.show();
     register.hide();
@@ -23,6 +29,9 @@ function showHome() {
 };
 
 function showLogin() {
+    todoForm.hide();
+    add.hide();
+    table.empty();
     username.text(`Welcome back!`);
     logout.hide();
     register.show();
@@ -33,6 +42,8 @@ function showLogin() {
 };
 
 function showRegister() {
+    todoForm.hide();
+    add.hide();
     username.text('Hello, nice to meeeeet u');
     logout.hide();
     register.hide();
@@ -42,6 +53,11 @@ function showRegister() {
     registerForm.show();
 };
 
+function showTodoForm() {
+    mainTable.hide();
+    todoForm.show();
+};
+
 function fetchData() {
     $.ajax('http://localhost:3000/user/todo', {
         method: 'GET',
@@ -49,37 +65,41 @@ function fetchData() {
             accesstoken: localStorage.token
         }
     })
-    .done(data => {
+    .done(todos => {
         let i = 0;
-        data.forEach(e => {
-            switch (e.status) {
-                case (true):
-                    e.status = 'Complete';
-                    break;
-                default:
-                    e.status = 'Incomplete';
-                    break;
+
+        todos.forEach(todo => {
+            if (todo.status) {
+                todo.status = 'Complete';
+            } else {
+                todo.status = 'Incomplete'
             }
-            e.dueDate = new Date(e.dueDate).toLocaleDateString(),
+            todo.dueDate = new Date(todo.dueDate).toLocaleDateString();
             i++;
 
             table.append(
                 `
                 <tr>
                   <th scope="row">${i}</th>
-                  <td>${e.title}</td>
-                  <td>${e.description}</td>
-                  <td>${e.status}</td>
-                  <td>${e.dueDate}</td>
+                  <td>${todo.title}</td>
+                  <td>${todo.description}</td>
+                  <td>${todo.status}</td>
+                  <td>${todo.dueDate}</td>
                   <td>
-                    <button> Delete </button>
-                    <button> Edit </button>
+                    <button id="delete-${todo.id}"> Delete </button>
+                    <button id="edit-${todo.id}"> Mark </button>
                   </td>
                 </tr>
                 `
             );
+
+            $(`#delete-${todo.id}`).on('click', () => {
+                deleteTodo(todo.id);
+            });
+            $(`#edit-${todo.id}`).on('click', () => {
+                editTodo(todo.id);
+            });
         });
-        // return data;
     })
     .fail(err => {
         console.log(err);
@@ -87,14 +107,14 @@ function fetchData() {
 };
 
 function deleteTodo(id) {
-    $.ajax(`http://localhost:3000/todo/${id}`, {
+    $.ajax(`http://localhost:3000/todos/${id}`, {
         method: 'DELETE',
         headers: {
             accesstoken: localStorage.token
         }
     })
     .done(data => {
-        console.log(data);
+        showHome();
         // return data;
     })
     .fail(err => {
@@ -103,15 +123,42 @@ function deleteTodo(id) {
 };
 
 function editTodo(id) {
-    $.ajax(`http://localhost:3000/user/todo/${id}`, {
-        method: 'PUT',
+    $.ajax(`http://localhost:3000/todos/${id}`, {
+        method: 'GET',
         headers: {
             accesstoken: localStorage.token
         }
     })
-    .done(data => {
-        console.log(data);
-        // return data;
+    .done(todo => {
+        if (todo.status) {
+            todo.status = false;
+        } else {
+            todo.status = true;
+        }
+
+        const title = todo.title,
+        description = todo.description,
+        status = todo.status,
+        dueDate = todo.dueDate;
+
+        $.ajax(`http://localhost:3000/todos/${id}`, {
+            method: 'PUT',
+            headers: {
+                accesstoken: localStorage.token
+            },
+            data: {
+                title,
+                description,
+                status,
+                dueDate
+            }
+        })
+        .done(data => {
+            showHome();
+        })
+        .fail(err => {
+            console.log(err);
+        })
     })
     .fail(err => {
         console.log(err);
@@ -121,10 +168,7 @@ function editTodo(id) {
 function onSignIn(googleUser) {
     var profile = googleUser.getBasicProfile();
     const googleToken = googleUser.getAuthResponse().id_token;
-    // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-    // console.log('Name: ' + profile.getName());
-    // console.log('Image URL: ' + profile.getImageUrl());
-    // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+
     $.ajax('http://localhost:3000/google-login', {
         method: 'POST',
         headers: {
@@ -198,6 +242,33 @@ $(document).ready(() => {
         })
     });
 
+    todoSubmit.on('click', event => {
+        event.preventDefault();
+        const title = $('#title').val(),
+        description = $('#description').val(),
+        status = false,
+        dueDate = $('#dueDate').val();
+
+        $.ajax('http://localhost:3000/todos/', {
+            method: 'POST',
+            headers: {
+                accesstoken: localStorage.token
+            },
+            data: {
+                title,
+                description,
+                status,
+                dueDate
+            }
+        })
+        .done(res => {
+            showHome();
+        })
+        .fail(err => {
+            console.log(err); // Wrong date / no title
+        })
+    });
+
     register.on('click', event => {
         event.preventDefault();
         showRegister();
@@ -210,6 +281,10 @@ $(document).ready(() => {
 
     logout.on('click', event => {
         event.preventDefault();
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+          console.log('User signed out.');
+        });
         localStorage.removeItem('token');
         localStorage.removeItem('username');
         showLogin();
@@ -217,5 +292,11 @@ $(document).ready(() => {
 
     add.on('click', event => {
         event.preventDefault();
+        showTodoForm();
+    });
+
+    main.on('click', event => {
+        event.preventDefault();
+        showHome();
     })
 });

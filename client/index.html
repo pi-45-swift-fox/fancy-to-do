@@ -16,7 +16,7 @@
 <body>
   <link rel="shortcut icon" href="#">
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Todo App</a>
+    <a id="home" class="navbar-brand" href="#">Todo App</a>
     <a class="navbar-brand" id="whoami"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
       aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,9 +24,13 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a id="logout" class="nav-link active" href="#" tabindex="2">Logout</a>
+        <button id="login" type="button" class="btn btn-primary">Login</button>
+        <button id="register" type="button" class="btn btn-success">Register</button>
+        <button id="logout" type="button" class="btn btn-danger">Logout</button>
+        <button id="add-todo" type="button" class="btn btn-success">Add todo</button>
+        <!-- <a id="logout" class="nav-link active" href="#" tabindex="2">Logout</a>
         <a id="login" class="nav-link active" href="#" tabindex="2">Login</a>
-        <a id="register" class="nav-link active" href="#" tabindex="2">Register</a>
+        <a id="register" class="nav-link active" href="#" tabindex="2">Register</a> -->
       </div>
     </div>
   </nav>
@@ -76,6 +80,29 @@
       <div class="g-signin2" data-onsuccess="onSignIn"></div>
     </div>
   </form>
+
+    <!-- Add todo -->
+
+    <form id="form-todo">
+      <div class="form-todo">
+        <h2>Add Todo</h2>
+      </div>
+      <div class="form-todo">
+        <label for="">Title</label>
+        <input type="text" class="form-control" id="title" aria-describedby="emailHelp">
+      </div>
+      <div class="form-todo">
+        <label for="">Description</label>
+        <input type="text" class="form-control" id="description">
+      </div>
+      <div class="form-todo">
+        <label for="">Due Date</label>
+        <input type="date" class="form-control" id="dueDate">
+      </div>
+      <div class="form-todo">
+        <button id="todo-submit" type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </form>
 
   <!-- Homepage -->
   <div class="table">

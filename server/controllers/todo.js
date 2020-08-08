@@ -1,21 +1,19 @@
 const { Todo } = require('../models');
 
 module.exports = class TodoController {
-    static main(req, res, next) {
-        Todo.findAll()
-            .then(data => {
-                res.status(200).json(data);
-            })
-            .catch(err => {
-                next({
-                    code: 500,
-                    type: 'todo',
-                    body: err
-                });
-                // console.log(err);
-                // res.status(500).json({ msg: 'Something went wrong!' });
-            })
-    }
+    // static main(req, res, next) {
+    //     Todo.findAll()
+    //         .then(data => {
+    //             res.status(200).json(data);
+    //         })
+    //         .catch(err => {
+    //             next({
+    //                 code: 500,
+    //                 type: 'todo',
+    //                 body: err
+    //             });
+    //         })
+    // } DEPRECATED
 
     static detail(req, res, next) {
         Todo.findByPk(+req.params.id)
@@ -28,7 +26,6 @@ module.exports = class TodoController {
                     type: 'todo',
                     body: err
                 });
-                // res.status(404).json({ msg: 'Not found' });
             })
     }
 
@@ -43,24 +40,28 @@ module.exports = class TodoController {
 
         Todo.create(todo)
             .then(data => {
-                res.status(201).json(data);
-                // res.redirect('/');
+                res.status(201).json({data});
             })
             .catch(err => {
                 next({
-                    code: 500,
+                    code: 400,
                     type: 'todo',
                     body: err
                 });
-                // console.log(err);
-                // res.status(500).json({ msg: 'Something went wrong!' });
             })
     }
 
     static delete(req, res, next) {
-        Todo.destroy(+req.params.id)
+        console.log(req.params.id)
+        Todo.destroy({
+            where: {
+                id: +req.params.id
+            }
+        })
             .then(() => {
-                res.status(200).redirect('/todos');
+                res.status(200).json({
+                    msg: 'delete success'
+                });
             })
             .catch(err => {
                 next({
@@ -68,11 +69,11 @@ module.exports = class TodoController {
                     type: 'todo',
                     body: err
                 });
-                // res.status(500).json({ msg: err });
             })
     }
 
     static edit(req, res, next) {
+        console.log(req.body)
         let todo = {
             title: req.body.title,
             description: req.body.description,
@@ -83,7 +84,9 @@ module.exports = class TodoController {
 
         Todo.update(todo, { where: { id: +req.params.id } })
             .then(() => {
-                res.status(200).redirect('/todos');
+                res.status(201).json({
+                    msg: 'OK'
+                });
             })
             .catch(err => {
                 next({
@@ -91,7 +94,6 @@ module.exports = class TodoController {
                     type: 'todo',
                     body: error
                 });
-                // res.status(404).json({ msg: 'Not found' });
             })
     }
 }

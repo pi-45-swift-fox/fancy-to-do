@@ -123,7 +123,7 @@ module.exports = (err, req, res, next) => {
             errorCode = 'INTERNAL_ERROR';
 
             res.status(err.code || 500).json({
-                msg: 'Unhandled Error',
+                msg: 'Unhandled Error in the end',
                 err_code: errorCode,
                 description: generatedError
             });
