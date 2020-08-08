@@ -16,6 +16,16 @@ module.exports = {
       },
       status: {
         type: Sequelize.BOOLEAN
+      },      
+      Due_date: {
+        type: Sequelize.DATE,
+        validate: {
+          isExpired(value){
+            if (value < new Date()) {
+              throw new Error("Input Tanggal Kadalursa!")
+            }
+          }
+        }
       },
       createdAt: {
         allowNull: false,

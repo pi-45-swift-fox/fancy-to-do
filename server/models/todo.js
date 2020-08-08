@@ -21,6 +21,13 @@ module.exports = (sequelize, DataTypes) => {
     Due_date: DataTypes.DATE
   }, {
     sequelize,
+    validate: {
+      isExpired(){
+        if (this.Due_date < new Date()) {
+          throw new Error("Input Tanggal Kadalursa!")
+        }
+      }
+    },
     modelName: 'Todo',
   });
   return Todo;

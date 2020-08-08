@@ -4,7 +4,7 @@ function authentication(req, res, next) {
     // console.log(req.headers);
 
     if(!req.headers.accesstoken){
-        return res.status(500).json({
+        return res.status(401).json({
             msg: 'Not Authenticated'
         })
     }
@@ -16,12 +16,12 @@ function authentication(req, res, next) {
         )
         User.findOne({
             where: {
-                username: userToken.username
+                email: userToken.email
             }
         })
         .then(user => {
             if (!user) {
-                res.status(500).json({
+                res.status(401).json({
                     msg: 'Not Authenticated'
                 })
             } else {
@@ -31,7 +31,7 @@ function authentication(req, res, next) {
             }
         })
     } catch (error) {
-        return res.status(500).json({
+        return res.status(401).json({
             msg: 'Not Authenticated'
         })
     }

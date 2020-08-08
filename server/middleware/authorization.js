@@ -9,13 +9,13 @@ function checkOwner(req, res, next) {
     })
     .then((result) => {
     if (req.userLogin.id !==  result.UserId) {
-        res.status(500).json('Not Authorized')
+        res.status(401).json('Not Authorized')
     } else {
         next()
     }
         
     }).catch((err) => {
-        res.status(500).json('Not Authorized')
+        res.status(401).json('Not Authorized')
     });
 
 }

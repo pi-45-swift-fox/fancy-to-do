@@ -11,7 +11,7 @@ route.put('/todos/:id', authentication,checkOwner, Controller.replace)
 route.delete('/todos/:id', authentication,checkOwner, Controller.destroy)
 route.post('/register', Controller.registrasi)
 route.post('/login', Controller.login)
-route.post('/getworkday', Controller.workday)
+route.post('/holidays', Controller.getHolidays)
 
 
 module.exports = route
