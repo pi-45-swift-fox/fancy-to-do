@@ -2,7 +2,7 @@ const { Todo } = require('../models')
 
 class TodoController {
     static show(req, res, next) {
-        Todo.findAll()
+        Todo.findAll({where: {UserId: req.user.id}})
             .then(data => res.status(200).json(data))
             .catch(err => next(err))
     }
@@ -11,9 +11,8 @@ class TodoController {
         let todo = {
             title: req.body.title,
             description: req.body.description,
-            status: req.body.status,
             dueDate: req.body.dueDate,
-            UserId: req.userLogin.dataValues.id
+            UserId: req.user.id
         }
         Todo.create(todo)
             .then(todo => res.status(201).json(todo))
@@ -75,15 +74,13 @@ class TodoController {
         //         id: req.params.id
         //     }
         // })
-    
-
         // .then(success => {
         //     if(success) {
-        //         res.status(200).json({dataDel}))}
+        //         res.status(200).json({dataDel})
         //     } else {
         //         res.status(404).json({message: 'error not found'})
         //     }
-        // }
+        // })
         // .catch(err => res.status(500).json(err))
     }
 }

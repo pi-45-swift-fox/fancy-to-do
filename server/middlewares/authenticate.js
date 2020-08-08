@@ -14,7 +14,7 @@ function authenticate(req, res, next) {
                 if(!user) {
                     next({errorCode: 'INVALID_ACCOUNT', message: 'Not Authorized'})
                 } else {
-                    req.userLogin = user
+                    req.user = user.dataValues
                     next()
                 }
             })

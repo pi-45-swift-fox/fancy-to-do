@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-signin-client_id" content="583200592199-mh9d6scqu28g5u7bg3jcbfqncq9mgb8k.apps.googleusercontent.com">
+    <title>Fancy todo</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+
+  <!-- LOGIN -->
+
+  <section id="loginPage">
+    <!-- <h1 class="text-align-center">LOGIN</h1> -->
+    <div id="alertLogin"></div>
+    <div class="row justify-content-center mt-5">
+      <div class="col-4">
+          <form action="#" method="POST" id="signInForm">
+              <div class="form-group">
+                  <label for="email">Email :</label>
+                  <input type="text" class="form-control" id="email" placeholder="e.g. Son@gmail.com">
+              </div>
+              <div class="form-group">
+                  <label for="password">Password :</label>
+                  <input type="password" class="form-control"  id="password" required placeholder="12345678">
+              </div>
+              <button type="submit" class="btn btn-primary">Login</button>
+              <a class="btn btn-outline-info mx-2" href="#" id="goRegister">Register</a>
+              <div class="mt-6 g-signin2" data-onsuccess="onSignIn"></div>
+          </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- REGISTER -->
+
+  <section id="registerPage">
+    <h1>REGISTER</h1>
+    <div id="alertRegister"></div>
+      <div class="row justify-content-center mt-5">
+        <div class="col-4">
+          <form action="#" method="POST" id="signUpForm">
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input class="form-control" id="emailRegister" type="email" placeholder="e.g. Son@gmail.com">
+              </div>
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input class="form-control" id="passwordRegister" type="password" placeholder="e.g. Bulmaku">
+              </div>
+              <button type="submit" class="btn btn-primary">Sign Up</button>
+              <a class="btn btn-outline-info " href="#" onclick="auth()">Cancel</a>
+            </form>
+        </div>
+      </div>
+  </section>
+
+  <!-- HOME PAGE -->
+
+      <section ID="homePage">
+        <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top" id="navbar-custom">
+          <a class="navbar-brand" href="/"><i class="far fa-check-square"></i> Todososs</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse"
+              data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+              aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                  <li class="nav-item">
+                      <a class="nav-link" href="#" onclick="auth()">My Todo</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="#" onclick="fetchPublicHolidays()">Public Holidays</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="#" onclick="logout()">Logout</a>
+                  </li>
+              </ul>
+          </div>
+      </nav> -->
+
+        <div class="container">
+          <a href="#" class="btn btn-sm btn-outline-info" id="logout">Log Out</a>
+            <h1 class="text-center mb-3">Todo List</h1>
+            <button class="btn btn-sm btn-outline-info" id="addTodo">Add Todo</button>
+            <!-- <a href="#" class="btn btn-sm btn-outline-info" onclick="addTodoForm()">Add Todo</a> -->
+            <table class="table table-hover mt-3 text-center">
+                <thead class="thead-light">
+                    <tr>
+                        <th>No.</th>
+                        <th>Tittle</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Due Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody class="table-data">
+                    
+                </tbody>
+            </table>
+        </div>
+        <div class="confirm">
+
+        </div>
+    </section>
+
+<!-- ADD TODO -->
+
+    <section id="addTodoPage">
+    <div id="alertAddTodo"></div>
+      <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-8">
+                <form action="#" method="POST" id="addTodoForm">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" class="form-control" id="title" placeholder="e.g: Harimau di Dalam Kubur">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="textarea" class="form-control" id="description" required placeholder="The most powerful scene in a movie">
+                    </div>
+                    <div class="form-group">
+                        <label for="due_date">Due Date</label>
+                        <input type="date" class="form-control" id="dueDate" required>
+                    </div>
+                    <button type="submit" class="btn btn-outline-success">Create</button>
+                    <a class="btn btn-outline-info " href="#" onclick="auth()">Cancel</a>
+                </form>
+            </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EDIT TODO -->
+
+    <section id="editTodoPage">
+        <div id="alertEditTodo"></div>
+        <div class="container">
+            <div class="row justify-content-center mt-5">
+                <div class="col-8">
+                    <form onsubmit="updateTodo(event)">
+                        <div class="form-group">
+                            <label for="title">Title :</label>
+                            <input type="text" class="form-control" name="title" id="titleEdit" value=" ">
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description :</label>
+                            <input type="textarea" class="form-control" name="description" id="descriptionEdit" required placeholder="Not connect yet to server">
+                        </div>
+                        <div class="form-group">
+                            <label for="dueDate">Due Date :</label>
+                            <input type="date" class="form-control" name="dueDate" id="dueDateEdit" required>
+                        </div>
+                        <button type="submit" class="btn btn-outline-success">Update</button>
+                        <a class="btn btn-outline-info " href="#" onclick="auth()">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="index.js"></script>
+</body>
+</html>
