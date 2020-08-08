@@ -10,7 +10,6 @@ POST /todos
 GET /todos/:id
 PUT /todos/:id
 DELETE /todos/:id
----
 
 ## POST /register
 register new User
