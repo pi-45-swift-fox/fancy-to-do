@@ -5,7 +5,7 @@ Membuat App tentang hal - hal keren yang bisa dilakukan
 
 Method      | URL                   | Description
 :---:       | :---:                 | ---
-**GET**     |`/`                    | Mendapatkan detail user yang logged in
+**GET**     | `/`                   | Mendapatkan detail user yang logged in
 **GET**     | `/users`              | Mendapatakan detail semua users dalam database
 **POST**    | `/register`           | Register, key: <br /> - email <br /> - username (3) <br /> - password
 **POST**    | `/login`              | Login, key: <br /> - email <br /> - username (3) <br /> - password

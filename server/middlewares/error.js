@@ -30,6 +30,7 @@ module.exports = (err, req, res, next) => {
                         default:
                             throw 'Unhandled error at code 400, case register';
                     }
+                    break;
                     
                 case ('todo'):
                     switch (err.body.errors[0].path) {
@@ -51,12 +52,16 @@ module.exports = (err, req, res, next) => {
                                 err_code : '',
                                 description: generatedError
                             })
+                            break;
                         default:
                             throw 'Unhandled error at code 400, case todo';
                     }
                     break;
+                default:
+                    throw 'Unhandled error at code 400, no error type';
             }
             break;
+
         case 401:
             errorCode = 'VALIDATION_ERROR';
 
@@ -65,6 +70,7 @@ module.exports = (err, req, res, next) => {
                 err_code: errorCode
             });
             break;
+
         case 403:
             errorCode = 'UNAUTHORIZED_ACCESS';
 
@@ -73,6 +79,7 @@ module.exports = (err, req, res, next) => {
                 err_code: errorCode
             });
             break;
+
         case 404:
             errorCode = 'MISSING_DATA';
 
@@ -89,23 +96,36 @@ module.exports = (err, req, res, next) => {
                         err_code: errorCode
                     });
                     break;
+                default:
+                    res.status(err.code).json({
+                        msg: 'No such data found',
+                        err_code: errorCode
+                    });
             }
-            
-            res.status(err.code).json({
-                msg: 'No such data found',
-                err_code: errorCode
-            });
             break;
+
+        case 409:
+            errorCode = 'CONFLICT';
+
+            switch (err.type) {
+                case ('register'):
+                    res.status(err.code).json({
+                        msg: 'Email sudah terdaftar',
+                        err_code: errorCode
+                    });
+                    break;
+                default:
+                    throw 'Unhandled error at code 409';
+            }
+            break;
+
         default:
-            errorCode = 'INTERNAL_ERROR'
+            errorCode = 'INTERNAL_ERROR';
 
             res.status(err.code || 500).json({
                 msg: 'Unhandled Error',
                 err_code: errorCode,
                 description: generatedError
             });
-            break;
     }
-
-    // res.render('fail-page');
 }

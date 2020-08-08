@@ -34,7 +34,7 @@ module.exports = class UserController {
                 include: [Todo]
             })
 
-            res.status(200).json(data);
+            res.status(200).json(data.Todos);
         } catch (error) {
             next({
                 code: 404,
@@ -98,7 +98,6 @@ module.exports = class UserController {
                         code: 401,
                         type: 'login'
                     });
-                    // res.status(401).json({err: 'Username or password is incorrect!'});
                 }
             })
             .catch(err => {
@@ -112,14 +111,25 @@ module.exports = class UserController {
             })
     }
 
-    static register(req, res, next) {
-        let data = {
+    static async register(req, res, next) {
+        const data = {
             email: req.body.email,
             username: req.body.username,
             password: req.body.password
-        };
+        }, chck = await User.findOne({
+            where: {
+                email: req.body.email
+            }
+        });
 
-        User.create(data)
+        if (chck) {
+            console.log('masuk')
+            next({
+                code: 409,
+                type: 'register',
+            });
+        } else {
+            User.create(data)
             .then(data => {
                 res.status(201).json(data);
             })
@@ -129,8 +139,11 @@ module.exports = class UserController {
                     type: 'register',
                     body: err
                 });
-                // console.log(err);
-                // res.status(400).json(err);
             })
+        }
+    }
+
+    static async googleLogin(req, res, next) {
+        let 
     }
 }

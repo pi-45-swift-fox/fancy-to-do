@@ -4,7 +4,7 @@ const TodoRouter = require('./todo');
 const { Auth } = require('../middlewares');
 
 // Home
-router.get('/', Auth.check, UserController.detail);
+router.get('/user/todo', Auth.check, UserController.detail);
 router.get('/users', UserController.main);
 router.post('/login', UserController.login);
 router.post('/register', UserController.register);
