@@ -29,8 +29,8 @@ class UserController {
             } else {
                 const verified = Helper.decoder(req.body.password, user.password)
                 if (verified) {
-                    const accessToken = Helper.tokenGenerator({id: user.id, email: user.email})
-                    res.status(200).json({accessToken})
+                    const access_token = Helper.tokenGenerator({id: user.id, email: user.email})
+                    res.status(200).json({access_token})
                 } else {
                     next({errorCode: 'LOGIN_ERROR'})
                 }

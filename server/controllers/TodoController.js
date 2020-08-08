@@ -22,11 +22,7 @@ class TodoController {
 
     static async show(req, res, next) {
         try {
-            const todo = await Todo.findAll({
-                where: {
-                    UserId: req.userLogin.id
-                }
-            })
+            const todo = await Todo.findAll()
 
             res.status(200).json(todo)
         }

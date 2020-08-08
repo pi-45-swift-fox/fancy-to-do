@@ -3,11 +3,11 @@ const {User} = require('../models')
 
 class Middleware {
     static authentication(req, res, next) {
-        if (!req.headers.accesstoken) {
+        if (!req.headers.access_token) {
             next({errorCode: 'ERROR_AUTHENTICATION'})   
         } else {
             try {
-                const userData = Helper.tokenVerifier(req.headers.accesstoken)
+                const userData = Helper.tokenVerifier(req.headers.access_token)
     
                 User.findOne({
                     where: {
