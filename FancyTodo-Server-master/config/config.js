@@ -1,10 +1,18 @@
-{
+require('dotenv').config()
+
+module.exports = {
   "development": {
-    "username": "postgres",
-    "password": "cep130991",
-    "database": "db_fancy_todo",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
+    "username": process.env.DB_USERNAME,
+    "password": process.env.DB_PASSWORD,
+    "database": process.env.DB_NAME,
+    "host": process.env.DB_HOST,
+    "dialect": "postgres",
+    "pool": {
+      "max": 5,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 1000
+    }
   },
   "test": {
     "username": "root",
