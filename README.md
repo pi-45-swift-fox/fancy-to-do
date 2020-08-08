@@ -2,14 +2,13 @@
 Membuat App tentang hal - hal keren yang bisa dilakukan
 
 --ENDPOINTS--
-POST /register
-POST /login
-
-GET /todos
-POST /todos
-GET /todos/:id
-PUT /todos/:id
-DELETE /todos/:id
+## POST /register
+## POST /login
+## GET /todos
+## POST /todos
+## GET /todos/:id
+## PUT /todos/:id
+## DELETE /todos/:id
 
 ## POST /register
 register new User
