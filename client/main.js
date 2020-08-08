@@ -1,5 +1,5 @@
-// let baseUrl = 'http://localhost:3000'
-let baseUrl = 'https://fathomless-wildwood-30178.herokuapp.com'
+let baseUrl = 'http://localhost:3000'
+// let baseUrl = 'https://fathomless-wildwood-30178.herokuapp.com'
 
 $(document).ready(() => {
     auth()
@@ -29,20 +29,22 @@ function landingPage() {
 function loginPage() {
     $('.registerpage').hide()
     $('#landingPage').hide()
+    $('.downicon').hide()
     $('.loginpage').show()
 }
 
 function toLogin(event) {
     event.preventDefault()
-    $('.registerpage').hide()
-    $('#landingPage').hide()
-    $('.loginpage').show()
+    $('body').css('background-image', 'url(https://images.unsplash.com/photo-1595814304795-04e0ae903ae8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60)'); 
+    loginPage()
 }
 
 function toRegister(event) {
     event.preventDefault()
+    $('body').css('background-image', 'url(https://images.unsplash.com/photo-1595814304795-04e0ae903ae8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60)'); 
     $('.registerpage').show()
     $('#landingPage').hide()
+    $('.downicon').hide()
     $('.loginpage').hide()
 }
 
@@ -58,6 +60,7 @@ function cancel(event) {
 function registerPage() {
     $('.loginpage').hide()
     $('.registerpage').show()
+    $('.downicon').hide()
     $('#landingPage').hide()
 }
 
@@ -73,7 +76,7 @@ const Toast = Swal.mixin({
     toast: true,
     position: 'top-end',
     showConfirmButton: false,
-    timer: 3000,
+    timer: 900,
     timerProgressBar: true,
     onOpen: (toast) => {
         toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -111,6 +114,7 @@ function homepage() {
     `);
     $('.loginpage').hide()
     $('.registerpage').hide()
+    $('.downicon').show()
     let items = $('.list-wrapper .list-item')
     let numItems = items.length
     let perPage = 9
@@ -153,6 +157,7 @@ function login(event) {
 }
 
 function onSignIn(googleUser) {
+    console.log(googleUser.Ot.Cd, '<<>>><>');
     let id_token = googleUser.getAuthResponse().id_token;
     $.ajax({
             method: 'POST',
@@ -162,8 +167,9 @@ function onSignIn(googleUser) {
             }
         })
         .done(response => {
-            console.log(response);
-            localStorage.setItem('access_token', response.access_token)
+            console.log(response, '<<');
+            localStorage.access_token = response.access_token
+            localStorage.email = googleUser.Ot.Cd
             Toast.fire({
                 icon: 'success',
                 title: 'Logged in successfully'
@@ -316,21 +322,18 @@ function invite(text) {
                     }
                 })
                 .done((result) => {
-                    console.log(result);
-                    // if (result) {
-                    //     showTodo()
-                    //     Swal.fire({
-                    //         icon: 'success',
-                    //         title: 'Success Update Todo'
-                    //     })
-                    // }
+                    Toast.fire({
+                        icon: 'success',
+                        title: result.message
+                    })
+                    console.log(result, 'done kirim');
                 })
-            //     .fail(err => {
-            //         Swal.fire({
-            //             icon: 'error',
-            //             title: 'failed Update Todo'
-            //         })
-            //     })
+                .fail(err => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'failed Update Todo'
+                    })
+                })
 
         }
     })
@@ -439,7 +442,7 @@ function add() {
                 Swal.fire({
                     icon: 'error',
                     title: 'Failed add new Todo',
-                    text: 'Please fill all fields'
+                    text: 'Please fill all fields!'
                 })
             } else {
                 $.ajax({
@@ -462,7 +465,8 @@ function add() {
                         console.log(err, 'ini err broo <<');
                         Swal.fire({
                             icon: 'error',
-                            title: 'Failed add new Todo'
+                            title: 'Failed add new Todo',
+                            text: err.responseJSON.message
                         })
                     })
             }
@@ -476,8 +480,8 @@ function deleteTodo(id) {
             text: "You won't be able to revert this!",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.value) {
@@ -517,10 +521,18 @@ function editTodo(id) {
             }
         })
         .done((result) => {
-            let date = result.Due_date
-            // let day = date.getDate()
-            console.log(date);
-            console.log(result.Due_date, '< ini di edit');
+            let monthName = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+            let date = new Date(result.Due_date)
+            console.log(date, 'awal');
+            let day = date.getDate()
+            let monthVal = (date.getMonth()) + 1
+            // console.log(monthVal);
+            let month = monthName[monthVal]
+            let year = date.getFullYear()
+            let setValueDate = `${day}/${monthVal}/${year}`
+            // date.value = `'${year}-${monthVal}-${day}'`
+            // console.log(date);
+            console.log(date, '< ini di edit');
             Swal.fire({
                 title: 'Edit Todo',
                 html: `<label>title</label>
@@ -534,9 +546,10 @@ function editTodo(id) {
                     <option value="On-Going" >On-Going</option>
                     </select>
                     <label>Due Date</label> 
-                    <input id="swal-input4-edit" class="swal2-input" type="date" values="${result.Due_date}">`,
+                    <input id="swal-input4-edit" class="swal2-input" type="date" value="'${date}'">`,
                 focusConfirm: false,
                 showCancelButton: true,
+                confirmButtonText: 'Update',
                 preConfirm: () => {
                     console.log('here preconfirm');
                     let title = $('#swal-input1-edit').val()

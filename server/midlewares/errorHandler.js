@@ -9,6 +9,9 @@ function errorHandler (err, req, res, next) {
         case "SequelizeValidationError":
             if(err.message === 'Validation error: Invalid validator function: unique') {
                 return res.status(400).json({message: "email already registered"})
+            } else if(err.message === 'Validation error: Validation isAfter on Due_date failed') {
+                console.log('<siini?');
+                res.status(400).json({message: 'Due Date Error!'})
             } else {
                 res.status(400).json({message: err.message})
             }

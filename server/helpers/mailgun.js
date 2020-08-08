@@ -7,7 +7,7 @@ const mailgun = require('mailgun-js')({ apiKey: api_key, domain: domain });
 function mailSent(data) {
     console.log('>>', data.data.dataValues, 'ini di mailgun');
     let tes = {
-        from: 'adekferdian@gmail.com',
+        from: 'adekferdian2@gmail.com',
         to: data.user.email,
         subject: `You successfully create Todo : ${data.data.dataValues.title}`,
         text: `

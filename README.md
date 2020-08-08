@@ -5,9 +5,10 @@
         * Postgres
         * Json Web Token
         * Bcrypt JSON Formated Response
+        * Google OAUTH
     When you create a new Todo, you will be notice on your authorized email on this app. This feature using technology:
         * mailgun (limited recipients)
-
+    Also, you can send invitation to anyone who you want to share your favourite todo.
 ## RESTful endpoints
     * GET /todos
     * GET /todos/:id

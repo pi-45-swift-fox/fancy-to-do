@@ -9,7 +9,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <meta name="google-signin-client_id" content="975105577426-m7ojq8p0ne9bsfr7e61gi3djp7299o2b.apps.googleusercontent.com">
+    <meta name="google-signin-client_id" content="975105577426-40el3bb3hemse8grhupcq2k8mncjrpua.apps.googleusercontent.com">
     <link rel="stylesheet" href="./style.css" type="text/css">
     <title>FancyTodo</title>
 </head>
@@ -35,8 +35,8 @@
                                         <br>You Can get QR Code from your favorite Todo and send it to your email.
                                         <br>Also, You can invite people who want to see your favorite todo.
                                     </h3>
-                                    <a data-aos="fade-right" data-aos-delay="900" href="" class="aksi btn btn-primary" style="width: 32%;" onclick="toLogin(event)">Login</a>
-                                    <a data-aos="fade-right" data-aos-delay="900" href="" class="aksi btn btn-primary" style="width: 32%;" onclick="toRegister(event)">Register</a>
+                                    <a data-aos="fade-right" data-aos-delay="900" href="" class="aksi btn btn-primary" style="width: 32%; border-color: white;" onclick="toLogin(event)">Login</a>
+                                    <a data-aos="fade-right" data-aos-delay="900" href="" class="aksi btn btn-primary" style="width: 32%; border-color: white;" onclick="toRegister(event)">Register</a>
                                 </div>
                             </div>
                         </div>
@@ -62,11 +62,11 @@
                 <div class="nav-item dropdown">
                     <a style="position: fixed;right: 5%;top: -0.5%;" class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <h5 id="user"></h5>
-                      <div>
+                      <div class="downicon">
                         <h4 id="downicon" class="glyphicon glyphicon-triangle-bottom"></h4>
                     </div> 
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="background-color: none; text-align: center;">
                         <a id="logoutbtn" href="#" onclick="logout(event)"><div>Logout</div></a>
                     </div>
                   </div>
@@ -142,7 +142,7 @@
                 <div>
                     <div>
                         <h1 style="font-size: 20px; color: whitesmoke;">Feeds</h1>
-                        <hr style="border: 2px solid whitesmoke;">
+                        <hr style="border: 2px solid #2d2232;">
                     </div>
                     <div class="content-body" data-spy="scroll" data-target="condtent" data-offset="0" ></div>
                 </div>    

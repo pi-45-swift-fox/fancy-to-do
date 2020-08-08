@@ -29,6 +29,7 @@ class MailController {
             email,
             title
         })
+        res.status(200).json({message: 'Invitation has been sent!'})
     }
 }
 
