@@ -14,17 +14,17 @@ let transport = nodemailer.createTransport({
 });
 
 module.exports = class UserController {
-    static async main(req, res, next) {
-        try {
-            const data = await User.findAll({ include: [Todo] });
-            res.status(200).json(data);
-        } catch (error) {
-            next({
-                code: 500,
-                body: error
-            });
-        }
-    }
+    // static async main(req, res, next) {
+    //     try {
+    //         const data = await User.findAll({ include: [Todo] });
+    //         res.status(200).json(data);
+    //     } catch (error) {
+    //         next({
+    //             code: 500,
+    //             body: error
+    //         });
+    //     }
+    // } DEPRECATED
 
     static async detail(req, res, next) {
         try {
