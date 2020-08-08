@@ -212,7 +212,6 @@ $(document).ready(() => {
                 showHome();
             })
             .fail(err => {
-                alert('noot noot');
                 console.log(err);
             })
     });
@@ -237,7 +236,6 @@ $(document).ready(() => {
             showHome();
         })
         .fail(err => {
-            alert('noot noot');
             console.log(err);
         })
     });
