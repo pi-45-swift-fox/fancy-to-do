@@ -15,14 +15,19 @@ module.exports = function(err, req, res, next) {
         } else {
             message = err.errors[0].message
         }
-    } else if (err == 'NOT_FOUND') {
+    } else if (err.errorCode == 'NOT_FOUND') {
         message = 'Data Not Found'
         statusCode = 404
-    } else if (err == 'INVALID_ACCOUNT') {
-        message = 'invalid email or password'
+    } else if (err.errorCode == 'INVALID_ACCOUNT' || err.name == 'JsonWebTokenError') {
+        message = 'Incorrect email or password'
+        statusCode = 401
+    } else if (err.errorCode == 'FORBIDDEN') {
+        message = 'Forbidden Request'
+        statusCode = 403
+    } else if (err.errorCode = 'DUPLICATE_EMAIL') {
+        message = err.message
         statusCode = 401
     }
-
     return res.status(statusCode).json({ message })
 
 }

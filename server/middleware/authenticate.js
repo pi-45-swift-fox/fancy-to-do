@@ -3,9 +3,13 @@ const jwt = require('jsonwebtoken')
 
 function authenticate(req, res, next) {
     if (!req.headers.accesstoken) {
-        return res.status(500).json({ message: 'Not authenticate' })
+        console.log('sini');
+        // console.log(req.headers);
+        return next({ errorCode: 'INVALID_ACCOUNT' })
+            // res.status(500).json({ message: 'Not authenticate' })
     }
     try {
+        // console.log(req.headers);
         const userToken = jwt.verify(
             req.headers.accesstoken,
             process.env.JWT_SECRET
@@ -16,14 +20,19 @@ function authenticate(req, res, next) {
                 }
             })
             .then(user => {
-                if (!user) return res.status(500).json({ message: 'Not authenticate' })
+                // console.log(user);
+                // console.log(user);
+                if (!user) return next({ errorCode: 'INVALID_ACCOUNT' })
+                    //  res.status(500).json({ message: 'Not authenticate' })
                 req.login = user
                 next()
             })
 
+
     } catch (err) {
-        // console.log(err);
-        return res.status(500).json({ message: 'Not authenticate' })
+        console.log(err);
+        next(err)
+            // res.status(500).json(err)
     }
 
 }

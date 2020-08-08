@@ -1,9 +1,14 @@
-const { Todo } = require('../models')
+const { Todo, User } = require('../models')
 
 class TodoController {
     static async read(req, res, next) {
         try {
-            const result = await Todo.findAll()
+            const result = await Todo.findAll({
+                    where: {
+                        UserId: req.login.id
+                    }
+                })
+                // console.log(result);
             res.status(200).json(result)
         } catch (err) {
             next(err)
@@ -11,26 +16,30 @@ class TodoController {
     }
 
     static async create(req, res, next) {
+        console.log('masuk');
         try {
             let newTodo = {
                 title: req.body.title,
                 description: req.body.description,
                 status: false,
                 due_date: req.body.due_date,
-                UserId: req.body.UserId
+                UserId: req.login.id
             }
+            console.log(newTodo);
             const create = await Todo.create(newTodo)
+            console.log(create);
             res.status(201).json(newTodo)
         } catch (err) {
+            console.log(err);
             next(err);
         }
     }
 
     static async findById(req, res, next) {
         try {
-            const result = await Todo.findByPk(+req.params.id)
+            const result = await Todo.findByPk(+req.params.id, { include: User })
             if (!result) {
-                next('NOT FOUND');
+                next({ errorCode: 'NOT_FOUND' });
             } else {
                 res.status(200).json(result)
             }
@@ -38,6 +47,24 @@ class TodoController {
             next(err)
         }
 
+    }
+
+    static async updateStatusTodo(req, res, next) {
+        try {
+            const updated = await Todo.update({ status: req.body.status }, {
+                where: {
+                    id: +req.params.id
+                }
+            })
+            if (!updated) {
+                next({ errorCode: 'NOT_FOUND' });
+            } else {
+                const todo = await Todo.findByPk(+req.params.id)
+                res.status(200).json(todo)
+            }
+        } catch (err) {
+            next(err);
+        }
     }
 
     static async updateTodo(req, res, next) {
@@ -56,7 +83,7 @@ class TodoController {
                 }
             })
             if (!updated) {
-                next('NOT FOUND');
+                next({ errorCode: 'NOT_FOUND' });
             } else {
                 const todo = await Todo.findByPk(+req.params.id)
                 res.status(200).json(todo)
@@ -77,7 +104,7 @@ class TodoController {
                 returning: true
             })
             if (delTodo === 0) {
-                next('NOT_FOUND')
+                next({ errorCode: 'NOT_FOUND' });
             } else {
                 res.status(200).json(todo)
             }

@@ -6,13 +6,11 @@ function checkId(req, res, next) {
             if (req.login.id == data.UserId) {
                 next()
             } else {
-                res.status(500).json({ message: 'Not authenticate' })
+                next({ errorCode: 'FORBIDDEN' })
             }
         })
         .catch(err => {
-            // console.log(err);
-            next('NOT_FOUND');
-            // res.status(500).json({ message: 'internal error' })
+            next({ errorCode: 'NOT_FOUND' });
         })
 }
 module.exports = checkId

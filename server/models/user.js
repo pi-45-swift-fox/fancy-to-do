@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             validate: {
                 checkPassword(value) {
-                    if (value.length < 7) throw new Error('Password minimum 6 characters!')
+                    if (value.length < 6) throw new Error('Password minimum 6 characters!')
                 },
                 notNull: {
                     msg: "Please input due date for your todo list!"
