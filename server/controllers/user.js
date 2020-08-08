@@ -1,6 +1,7 @@
 const { User } = require('../models')
 const { compareHash } = require('../helpers/bcrypt')
 const { generateToken } = require('../helpers/jwt')
+const { verifyToken } = require('../helpers/googleoauth');
 
 class UserController {
   static register (req, res, next) {
@@ -65,40 +66,32 @@ class UserController {
   }
 
   static googleLogin (req, res, next) {
-    let name;
-    let email;
-    let newUser = false;
+    let email
+    let newUser = false
 
-    const { google_token } = req.headers;
-    console.log(google_token);
-
-    verifyIdToken(google_token)
+    const { google_token } = req.headers
+    verifyToken(google_token)
       .then(payload => {
-        name = `${payload.given_name} ${payload.family_name}`
-        email = payload.email;
-        return User
-          .findOne({
-            where: {
-              email
-            }
-          })
+        email = payload.email
+        return User.findOne({
+          where: {
+            email
+          }
+        })
       })
       .then(user => {
-        console.log(user);
         if (user) {
-          return user;
+          return user
         } else {
-          newUser = true;
-          return User
-            .create({
-              name,
-              email,
-              password: process.env.GOOGLE_PASSWORD_DEFAULT
-            })
+          newUser = true
+          return User.create({
+            email,
+            password: process.env.GOOGLE_PASSWORD_DEFAULT
+          })
         }
       })
       .then(newUser => {
-        let code = newUser ? 201 : 200;
+        let code = newUser ? 201 : 200
         const access_token = generateToken({
           id: newUser.id,
           email: newUser.email
@@ -108,7 +101,7 @@ class UserController {
         })
       })
       .catch(err => {
-        next(err);
+        next(err)
       })
   }
 }
