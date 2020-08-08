@@ -14,7 +14,6 @@ class TodoController {
             UserId: req.UserId
         })
             .then(created => {
-                // mailSent(created)
                 data = created
                 res.status(201).json(created)
                 return User.findOne({
