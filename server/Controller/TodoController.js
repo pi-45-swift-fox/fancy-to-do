@@ -1,10 +1,10 @@
 const { Todo } = require('../models/');
-const mailHelper = require('../helper/mailHelper.js');
+const mailgun = require('../helper/mailgun.js')
 
 class TodoController {
   static viewAll(req, res, next)
   {
-    Todo.findAll({order: [['id', 'ASC']]})
+    Todo.findAll({order: [['id', 'ASC']], where: {UsersId: req.userLogin.id}})
       .then(data => {
         return res.status(200).json(data);
       })
@@ -13,26 +13,22 @@ class TodoController {
       })
   }
 
-  static async post(req, res, next)
+  static post(req, res, next)
   {
-    try
-    {
-      const obj = {
-        "title": req.body.title,
-        "description": req.body.description,
-        "status": req.body.status,
-        "due_date": new Date(req.body.due_date),
-        "UsersId": +req.userLogin.id
-      }
+    const obj = {
+      "title": req.body.title,
+      "description": req.body.description,
+      "status": req.body.status,
+      "due_date": new Date(req.body.due_date),
+      "UsersId": +req.userLogin.id
+    }
 
-      const data = await Todo.create(obj);
-      const email = await mailHelper(req.userLogin.email, data, 'Create');
-      return res.status(201).json({data, email: "email has been sent"});
-    }
-    catch (err)
-    {
-      next(err);
-    }
+    Todo.create(obj)
+      .then(data => {
+        // mailgun(req.userLogin.email, data, "Create");
+        return res.status(201).json({data, message: `email has been sent to ${req.userLogin.email}`});
+      })
+      .catch(err => next(err));
   }
 
   static viewOne(req, res, next)
@@ -50,35 +46,29 @@ class TodoController {
 
   static async update(req, res, next)
   {
-    try
-    {
-      const dateNow = new Date();
-      const obj = {
-        "title": req.body.title,
-        "description": req.body.description,
-        "status": req.body.status,
-        "due_date": new Date(req.body.due_date),
-        "UsersId": +req.body.UsersId
-      };
+    const dateNow = new Date();
+    const obj = {
+      "title": req.body.title,
+      "description": req.body.description,
+      "status": req.body.status,
+      "due_date": new Date(req.body.due_date),
+      "UsersId": +req.userLogin.id
+    };
 
-      if (dateNow > obj.due_date)
-        return next();
+    if (dateNow > obj.due_date)
+      return next();
 
-      const data = await Todo.update(obj, {where: {id: +req.params.id}, returning: true})
+    Todo.update(obj, {where: {id: +req.params.id}, returning: true})
+      .then(data => {
+        if (data)
+        {
+          // mailgun(req.userLogin.email, data[1][0], "Update");
+          return res.status(200).json({data: data[1][0], message: `email has been sent to ${req.userLogin.email}`});
+        }
+        return next({ errorCode: "NOT_FOUND", message: `Todo list with id ${+req.params.id} not found`});
 
-      if (data)
-      {
-        const email = await mailHelper(req.userLogin.email, data[1][0], 'Update');
-        return res.status(200).json({data: data[1][0], email: "email has been sent"});
-      }
-
-      return next({ errorCode: "NOT_FOUND", message: `Todo list with id ${+req.params.id} not found`});
-    }
-    catch (err)
-    {
-      return next(err);
-    }
-
+      })
+      .catch(err => next(err));
   }
 
   static destroy(req, res, next)
