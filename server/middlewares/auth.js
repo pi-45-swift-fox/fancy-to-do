@@ -11,9 +11,9 @@ class Auth {
 
             let data = await User.findOne({
                 where: {
-                    username: userToken.username
+                    email: userToken.email
                 }
-            })
+            });
 
             req.userLogin = data;
             next();
@@ -24,8 +24,6 @@ class Auth {
                 type: 'token',
                 body: error
             });
-            // console.log(error);
-            // res.status(500).json({ msg: 'Unable to authenticate' });
         }
     }
 
@@ -49,8 +47,6 @@ class Auth {
                 type: 'token',
                 body: error
             });
-            // console.log(error);
-            // res.status(500).json({ msg: 'Something went wrong!' });
         }
     }
 }

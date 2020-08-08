@@ -2,107 +2,111 @@
 <html lang="en">
 
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="google-signin-client_id" content="124181030642-4d1m4s0cpaqu47lvvp41191e3913l2uh.apps.googleusercontent.com">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-
-    <title>Todo</title>
+  <title>Todo</title>
 </head>
 
 <body>
   <link rel="shortcut icon" href="#">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Todo App</a>
-        <a class="navbar-brand" id="whoami"></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav">
-            <a id="logout" class="nav-link active" href="#" tabindex="2">Logout</a>
-            <a id="login" class="nav-link active" href="#" tabindex="2">Login</a>
-            <a id="register" class="nav-link active" href="#" tabindex="2">Register</a>
-          </div>
-        </div>
-      </nav>
-    
-      <!-- Login -->
-      
-      <form id="form-login">
-        <div class="form-login">
-          <h2>Login</h2>
-        </div>
-        <div class="form-login">
-          <label for="">Email address</label>
-          <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
-          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-        </div>
-        <div class="form-login">
-          <label for="">Password</label>
-          <input type="password" class="form-control" id="password">
-        </div>
-        <div class="form-login">
-          <button id="login-submit" type="submit" class="btn btn-primary">Submit</button>
-        </div>
-      </form>
-
-      <!-- Register -->
-
-      <form id="form-register">
-        <div class="form-register">
-          <h2>Register</h2>
-        </div>
-        <div class="form-register">
-          <label for="">Email address</label>
-          <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
-          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-        </div>
-        <div class="form-register">
-          <label for="">Username</label>
-          <input type="text" class="form-control" id="username">
-        </div>
-        <div class="form-register">
-          <label for="">Password</label>
-          <input type="password" class="form-control" id="password">
-        </div>
-        <div class="form-register">
-          <button id="register-submit" type="submit" class="btn btn-primary">Submit</button>
-        </div>
-      </form>
-
-      <!-- Homepage -->
-    <div class="table">
-      <table class="table table-dark">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Title</th>
-            <th scope="col">Description</th>
-            <th scope="col">Status</th>
-            <th scope="col">Due</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody class="append-todo">
-        </tbody>
-      </table>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Todo App</a>
+    <a class="navbar-brand" id="whoami"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a id="logout" class="nav-link active" href="#" tabindex="2">Logout</a>
+        <a id="login" class="nav-link active" href="#" tabindex="2">Login</a>
+        <a id="register" class="nav-link active" href="#" tabindex="2">Register</a>
+      </div>
     </div>
+  </nav>
 
-    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+  <!-- Login -->
+
+  <form id="form-login">
+    <div class="form-login">
+      <h2>Login</h2>
+    </div>
+    <div class="form-login">
+      <label for="">Email address</label>
+      <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
+      <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    </div>
+    <div class="form-login">
+      <label for="">Password</label>
+      <input type="password" class="form-control" id="password">
+    </div>
+    <div class="form-login">
+      <button id="login-submit" type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </form>
+
+  <!-- Register -->
+
+  <form id="form-register">
+    <div class="form-register">
+      <h2>Register</h2>
+    </div>
+    <div class="form-register">
+      <label for="">Email address</label>
+      <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
+      <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    </div>
+    <div class="form-register">
+      <label for="">Username</label>
+      <input type="text" class="form-control" id="username">
+    </div>
+    <div class="form-register">
+      <label for="">Password</label>
+      <input type="password" class="form-control" id="password">
+    </div>
+    <div class="form-register">
+      <button id="register-submit" type="submit" class="btn btn-primary">Submit</button>
+      <h3> Or, use:</h3>
+      <div class="g-signin2" data-onsuccess="onSignIn"></div>
+    </div>
+  </form>
+
+  <!-- Homepage -->
+  <div class="table">
+    <table class="table table-dark">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Title</th>
+          <th scope="col">Description</th>
+          <th scope="col">Status</th>
+          <th scope="col">Due</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody class="append-todo">
+      </tbody>
+    </table>
+  </div>
+
+  <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script> bruh -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-        crossorigin="anonymous"></script>
-    <script type = "text/javascript" src="./index.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+    crossorigin="anonymous"></script>
+  <script type="text/javascript" src="./index.js"></script>
 </body>
 
 </html>

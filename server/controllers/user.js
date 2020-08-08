@@ -2,6 +2,7 @@ const { User, Todo } = require('../models');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
+const { OAuth2Client } = require('google-auth-library');
 
 let transport = nodemailer.createTransport({
     host: 'smtp.mailtrap.io',
@@ -29,7 +30,7 @@ module.exports = class UserController {
         try {
             const data = await User.findOne({
                 where: {
-                    username: req.userLogin.username
+                    email: req.userLogin.email
                 },
                 include: [Todo]
             })
@@ -79,10 +80,10 @@ module.exports = class UserController {
                 if (data) {
                     tmp = data;
                     req.userLogin = data;
-                    
+
                     return bcrypt.compare(req.body.password, data.password);
                 } else {
-                    throw 'Missing data';
+                    throw 'No email found';
                 }
             })
             .then(chck => {
@@ -90,14 +91,12 @@ module.exports = class UserController {
                     const token = jwt.sign({
                         id: tmp.id,
                         username: tmp.username,
+                        email: tmp.email
                     }, process.env.JWT_SECRET);
 
                     res.status(200).json({ username: tmp.username, token: token });
                 } else {
-                    next({
-                        code: 401,
-                        type: 'login'
-                    });
+                    throw 'Wrong Password';
                 }
             })
             .catch(err => {
@@ -106,8 +105,6 @@ module.exports = class UserController {
                     type: 'login',
                     body: err
                 });
-                // If database somehow could not access any data related, use:
-                // console.log(err), next({ code: 500, type: 'sequelize' });
             })
     }
 
@@ -129,21 +126,64 @@ module.exports = class UserController {
                 type: 'register',
             });
         } else {
-            User.create(data)
-            .then(data => {
-                res.status(201).json(data);
-            })
-            .catch(err => {
-                next({
-                    code: 400,
-                    type: 'register',
-                    body: err
-                });
-            })
+            const result = await User.create(data)
+                .then(data => {
+                    res.status(201).json(data);
+                })
+                .catch(err => {
+                    next({
+                        code: 400,
+                        type: 'register',
+                        body: err
+                    });
+                })
+            res.status(201).json({
+                result
+            });
         }
     }
 
     static async googleLogin(req, res, next) {
-        let 
+        try {
+            const token = req.headers.token;
+            const client = new OAuth2Client(process.env.CLIENT_ID);
+            const ticket = await client.verifyIdToken({
+                idToken: token,
+                audience: process.env.CLIENT_ID
+            });
+            const payload = ticket.getPayload();
+
+            const result = await User.findOne({
+                where: {
+                    email: payload.email
+                }
+            });
+
+            if (result) {
+                const token = jwt.sign({
+                    id: result.id,
+                    username: result.username,
+                    email: result.email
+                }, process.env.JWT_SECRET);
+
+                res.status(200).json({ username: result.username, token: token });
+            } else {
+                const newUser = await User.create({
+                    username: payload.name,
+                    email: payload.email,
+                    password: process.env.GOOGLE_PASSWORD
+                });
+
+                const token = jwt.sign({
+                    id: newUser.id,
+                    username: newUser.username,
+                    email: newUser.email,
+                }, process.env.JWT_SECRET);
+
+                res.status(200).json({ username: newUser.username, token: token });
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
 }

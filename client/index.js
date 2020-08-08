@@ -118,6 +118,29 @@ function editTodo(id) {
     })
 };
 
+function onSignIn(googleUser) {
+    var profile = googleUser.getBasicProfile();
+    const googleToken = googleUser.getAuthResponse().id_token;
+    // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+    // console.log('Name: ' + profile.getName());
+    // console.log('Image URL: ' + profile.getImageUrl());
+    // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+    $.ajax('http://localhost:3000/google-login', {
+        method: 'POST',
+        headers: {
+            token: googleToken, // Naming googleToken in headers is not possible
+        }
+    })
+        .done(data => {
+            localStorage.username = data.username;
+            localStorage.token = data.token;
+            showHome();
+        })
+        .fail(err => {
+            console.log(err);
+        })
+}
+  
 // Ready
 $(document).ready(() => {
     if (localStorage.token) {

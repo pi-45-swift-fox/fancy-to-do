@@ -7,6 +7,7 @@ const { Auth } = require('../middlewares');
 router.get('/user/todo', Auth.check, UserController.detail);
 router.get('/users', UserController.main);
 router.post('/login', UserController.login);
+router.post('/google-login', UserController.googleLogin);
 router.post('/register', UserController.register);
     // Third-Party API
 router.post('/send', UserController.send);
