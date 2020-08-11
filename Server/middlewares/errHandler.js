@@ -20,21 +20,21 @@ function errorHandler(err, req, res, next){
 
     } else if (err.errorCode == 'INVALID_TOKEN'){
         statusCode = 401
-        message = "Invalid Token"
+        message = ["Invalid Token"]
 
     } else if(err.errorCode == "INVALID_DATA"){
         statusCode = 404
-        message = "Data not found"
+        message = ["Data not found"]
 
     } else if(err.errorCode == "FORBIDDEN_REQUEST"){
         statusCode = 403
-        message = "Cannot access data"
+        message = ["Cannot access data"]
 
     } else if(err.errorCode == "INVALID_AUTHORIZATION"){
         statusCode = 403
-        message = "Not Authorize"
-        
+        message = ["Not Authorize"]
     }
+
     return res.status(statusCode).json({message})
 }
 

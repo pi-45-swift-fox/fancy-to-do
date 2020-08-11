@@ -2,6 +2,29 @@ const store = {
     selectedId: null
 }
 
+function onSignIn(googleUser) {
+    const google_token = googleUser.getAuthResponse().id_token
+    $.ajax('http://localhost:3000/google-login ', {
+        method :"POST",
+        headers: {
+            google_token
+        }
+    })
+    .done(data=>{
+        console.log(data)
+        localStorage.token = data.token
+        localStorage.userId = data.id
+        localStorage.name = data.email
+        isLogin()    
+    })
+    .fail(err=>{
+        console.log('err', err)
+    })
+    .always(()=>{
+        console.log('selesai')
+    })
+}
+
 $(document).ready(() => {
     isLogin()
     // event click
@@ -30,7 +53,6 @@ $(document).ready(() => {
         const description = $("#todo-description").val()
         const status = $("#todo-status").val()
         const due_date = $("#todo-due_date").val()
-        console.log(title, description, status, due_date)
 
         $.ajax('http://localhost:3000/todos', {
                 method: "post",
@@ -49,9 +71,7 @@ $(document).ready(() => {
                 showTodo()
             })
             .fail(err => {
-                console.log(err)
                 const errors = err.responseJSON.message
-                console.log(err.responseJSON.message)
                 showError(errors)
             })
             .always(() => {
@@ -81,10 +101,13 @@ $(document).ready(() => {
             store.selectedId = null
             showHomepage()
             showTodo()
+            $("#update-todo-title").val('')
+            $("#update-todo-description").val('')
+            $("#update-todo-status").val('')
+            $("#update-todo-due_date").val('')
         })
         .fail(err=>{
             const errors = err.responseJSON.message
-            console.log(err.responseJSON.message)
             showError(errors)
         })
         .always(()=>{
@@ -133,7 +156,6 @@ function register() {
         event.preventDefault()
         const email = $('#email-register').val()
         const password = $('#password-register').val()
-        console.log(email, password)
         $.ajax('http://localhost:3000/register', {
             method: "POST",
             data: {
@@ -141,7 +163,6 @@ function register() {
                 password
             }
         }).done(data => {
-            console.log(data)
             let str = ''
             for (let i = 0; i < data.email.length; i++) {
                 if (data.email[i] === '@') {
@@ -182,7 +203,6 @@ function login() {
             isLogin()
         }).fail(err => {
             const errors = err.responseJSON.message
-            console.log(err.responseJSON.message)
             showError(errors)
         }).always(() => {
             console.log('Login Berhasil')
@@ -200,6 +220,16 @@ function showHomepage() {
     $("#logoutButton").click(event => {
         event.preventDefault()
         localStorage.clear()
+        const auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut()
+        .then(data=>{
+            localStorage.clear()
+            $(".form-login").show()
+            $("#homepage").hide()
+        })
+        .catch(err=>{
+            console.log(err)
+        })
         showLogin()
     })
     let str = ''
@@ -237,9 +267,6 @@ function showTodo() {
                     <button id="deleteTodo${el.id}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">
                     Delete
                     </button>
-                    <button id="showTodo${el.id}" class="bg-orange-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-                    Show
-                    </button></td>
                     </tr>
                 `)
 
@@ -258,7 +285,7 @@ function showTodo() {
             })
         })
         .fail(err => {
-            console.log(err)
+            showError(err)
         })
         .always(() => {
             console.log('SHOW TODO NIH')
