@@ -45,9 +45,7 @@ $('#signUpForm').submit(event => {
 
     const email = $('#emailRegister').val()
     const password = $('#passwordRegister').val()
-    // console.log(email, password);
     $(`#alertRegister`).empty()
-    
 
     $.ajax('http://localhost:3000/register', {
         method: 'POST',
@@ -56,9 +54,7 @@ $('#signUpForm').submit(event => {
             password,
         }
     })
-        .done(data => {
-            console.log(data, '<<<<<<< data register')
-            auth()})
+        .done(data => auth())
         .fail(err => {
             $(`#alertRegister`).append(`
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -67,7 +63,7 @@ $('#signUpForm').submit(event => {
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>`)
-            console.log(err)})
+        })
         .always(() => console.log('success'))
 })
 
@@ -83,9 +79,6 @@ $('#signInForm').submit(event => {
         data: {
             email,
             password
-        },
-        headers: {
-            accesstoken: localStorage.token
         }
     })
     .done(data => {
@@ -158,9 +151,7 @@ function listTodos() {
                 `)
             });
         })
-        .fail(err => {
-            console.log(err, '<<< err fetchTodos');
-        })
+        .fail(err => console.log(err, '<<< err fetchTodos'))
 }
 
 $('#addTodo').click(event => {
@@ -200,7 +191,7 @@ $('#addTodoForm').submit(event => {
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>`)
-            console.log(err)})
+        })
         .always(() => console.log('success'))
 })
 
@@ -240,13 +231,10 @@ function deleteTodo(id) {
         }
     })
         .done(data => {
-            console.log(data, 'success delete');
             listTodos()
             $('#confirmDelete').modal('hide')
         })
-        .fail(err => {
-            console.log(err.responseJSON, '<<<<< err delete');
-        })
+        .fail(err => console.log(err.responseJSON, '<<<<< err delete'))
 }
 
 function editTodoForm(id) {
@@ -266,12 +254,9 @@ function editTodoForm(id) {
             $('#titleEdit').val(data.title)
             $('#descriptionEdit').val(data.description)
             $('#dueDateEdit').val(data.dueDate)
-            console.log(data.dueDate);
-            
+            console.log(data.dueDate)
         })
-        .fail(err => {
-            console.log(err.responseJSON, '<<<<< err addTodo');
-        })
+        .fail(err => console.log(err.responseJSON, '<<<<< err addTodo'))
 }
 
 function updateTodo(event) {
@@ -291,6 +276,13 @@ function updateTodo(event) {
             auth()
         })
         .fail(err => {
-            console.log(err.responseJSON, '<<<<< err updateTodo');
+            $(`#alertEditTodo`).append(`
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                ${err.responseJSON.message}        
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>`)
+            // console.log(err.responseJSON, '<<<<< err updateTodo');
         })
 }

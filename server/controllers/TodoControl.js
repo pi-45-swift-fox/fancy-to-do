@@ -35,8 +35,7 @@ class TodoController {
         let dataUpdate = {
             title: req.body.title,
             description: req.body.description,
-            status: req.body.status,
-            Due_date: req.body.Due_date
+            dueDate: req.body.dueDate
         }
         Todo.findByPk(req.params.id)
             .then(data => {
