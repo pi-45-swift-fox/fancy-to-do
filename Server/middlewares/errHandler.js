@@ -15,7 +15,8 @@ function errorHandler(err, req, res, next){
 
     } else if (err.errorCode == 'INVALID_USER'){
         statusCode = 400
-        message = "Incorrect email or password"
+        const errors = ['Incorrect email or password']
+        message = errors
 
     } else if (err.errorCode == 'INVALID_TOKEN'){
         statusCode = 401
