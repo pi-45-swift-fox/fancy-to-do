@@ -11,52 +11,48 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Todo.belongsTo(models.User)
+      Todo.belongsTo(models.User, {foreignKey : "userId"})
     }
   };
-
   Todo.init({
     title: {
-      type: DataTypes.STRING,
+      type : DataTypes.STRING,
+      allowNull : false,
       validate : {
-        notEmpty : {
-          args: true,
-          msg : 'Title needs to be filled'
+        notNull : {
+          msg : "Title must be filled"
+        },
+        notEmpty: {
+          args :  true,
+          msg : "Blank title input"
         }
       }
     },
     description: {
       type: DataTypes.STRING,
+      allowNull : false,
       validate : {
+        notNull : {
+          msg : "Description must be filled"
+        },
         notEmpty : {
-          args: true,
-          msg : 'Description needs to be filled'
+          args : true,
+          msg : "Blank description input"
         }
       }
     },
-    status: {
-      type: DataTypes.BOOLEAN
-    },
-    Due_date: {
-      type: DataTypes.DATE,
+    status: DataTypes.BOOLEAN,
+    due_date: {
+      type:DataTypes.DATE,
       validate : {
-        // isAfter : {
-        //   args : `${new Date()}`,
-        //   msg: 'MASUK'
-        // }
-        isDate(value){
-          if(value <= new Date()){
-            throw new Error('Tanggal tidak boleh kurang dari hari ini')
+        isDateTrue(date){
+          if(date <= new Date()){
+            throw new Error('Invalid date input')
           }
         }
       }
     },
-    UserId:{
-      type : DataTypes.INTEGER,
-      // validate : {
-        
-      // }
-    }
+    userId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Todo',

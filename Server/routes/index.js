@@ -1,15 +1,15 @@
-const router = require('express').Router()
-const UserController = require('../controller/UserController')
-const authenticate = require('../middlewares/authenticate')
-const todoRoutes = require('./TodoRouter')
-const ThirdPartyAPI = require('../controller/thirdPartyApi')
+const route = require('express').Router()
+const todoRoutes = require('./todoRoutes')
+const UserController = require('../Controller/UserController')
+const authenticate = require('../Middlewares/authenticate')
 
+route.get('/', (req,res)=>{
+    res.send('123')
+})
 
-router.get('/tes', ThirdPartyAPI.anime)
-router.post('/register', UserController.register)
-router.post('/login', UserController.login)
+route.post('/register', UserController.register)
+route.post('/login', UserController.login)
+route.use(authenticate)
+route.use('/todos', todoRoutes)
 
-router.use('/todos',authenticate, todoRoutes)
-
-
-module.exports = router
+module.exports = route

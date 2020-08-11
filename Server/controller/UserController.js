@@ -1,50 +1,66 @@
-const {User, Todo} = require('../models')
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
-
-class Controller{
+const {User} = require('../models')
+const {decode} = require('../helpers/bcrypt')
+const {generateToken} = require('../helpers/jwt')
+const axios = require('axios')
+class UserController{
     static async register(req, res, next){
         try{
-            // const encryptedPassword = bcrypt.hashSync(req.body.password, 8)
-            const newUser = {
-                email: req.body.email,
-                password : req.body.password,
-                role : req.body.role
-            }
-            // console.log(newUser)
-            const data = await User.create(newUser)
-            res.status(201).json({message:`data id: ${data.id}, ${data.email} is created and its role is ${data.role}`})
+            const { email , password } = req.body 
+            const newData = await User.create({email,password})
+            res.status(201).json({id: newData.id, email: newData.email})
+            
         }
-        catch(err){
-            next(err)
+        catch(error){
+            next(error)
+        }
+    }
+    
+    static async login(req, res, next){
+        try {
+            const {email, password} = req.body
+            const user = await User.findOne({where:{email}})
+            
+            if(!user){
+                return next({errorCode : 'INVALID_USER'})
+            }
+
+            const checkPassword = decode(password, user.password)
+            if(!checkPassword){
+                return next({errorCode : 'INVALID_USER'})
+            }
+                
+            const token = generateToken(user)
+            res.status(200).json({id: user.id,email: user.email ,token})
+        
+        } catch (error){
+            next(error)
         }
     }
 
-    static async login(req, res, next){
-        try{
-            // console.log(req.body)
-            const data = await User.findOne({where:
-                {email : req.body.email}
-            })
-            if(!data){
-                next({errorCode: 'NOT_FOUND'})
-            }else{
-                const password = bcrypt.compareSync(req.body.password, data.password)
-                console.log(password)
-                if(password){
-                    const token = jwt.sign({id: data.id, name: data.email, role: data.role}, process.env.JWT_SECRET)
-                    // console.log(data.id, data.email, data.role)
-                    res.status(200).json({id: data.id, user: data.email, role: data.role, token })
-                }else{
-                    next({errorCode : 'INCORRECT_USER'})
-                }
-
+    static async getNews(req, res, next) {
+        try {
+            console.log(req.userLogin.id)
+            const result = await axios({
+            method: 'get',
+            url: 'https://content.guardianapis.com/search',
+            headers: {
+                "api-key": '17eaacc7-e89e-430e-826f-8f604853c397'
+            },
+            params: {
+                "q": req.userLogin.title,
+                "show-fields" : "all" 
             }
-        }catch(err){
-            console.log(err)
-            next(err)
+            })
+
+            let news = result.data.response.results;
+
+            res.status(200).json({
+            news
+            })
+        } catch (error) {
+            console.log(error)
         }
-    }   
+        }
 }
 
-module.exports = Controller
+module.exports = UserController

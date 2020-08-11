@@ -1,12 +1,11 @@
 const route = require('express').Router()
 const TodoController = require('../Controller/TodoController')
+const authorize = require('../Middlewares/authorization')
 
-route.post('/add', TodoController.add)
+route.post('/', TodoController.add)
 route.get('/', TodoController.show)
-route.get('/:id', TodoController.showId)
-route.put('/:id', TodoController.update)
-route.delete('/:id', TodoController.delete)
-
-
+route.get('/:id', authorize, TodoController.showId)
+route.put('/:id', authorize, TodoController.update)
+route.delete('/:id', authorize, TodoController.delete)
 
 module.exports = route
