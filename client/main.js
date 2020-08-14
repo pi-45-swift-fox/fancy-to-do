@@ -1,7 +1,14 @@
 $(document).ready(function () {
+  checkLogin()
+  todayDate()
 
+});
+
+
+function checkLogin() {
   if (localStorage.token) {
     fetchTodoList()
+    $("#welcome").hide()
     $("#btnLogin").hide()
     $("#btnRegis").hide()
     $("#login").hide()
@@ -10,16 +17,17 @@ $(document).ready(function () {
     $("#btnLogOut").show()
     $('#updateFields').hide()
   } else {
-    $("#login").show()
+    $("#welcome").show()
     $("#login").hide()
     $("#regis").hide()
     $("#after-login").hide()
-    $("#alert").hide()
+    $("#notif").hide()
     $("#btnLogOut").hide()
     $('#updateFields').hide()
   }
-  todayDate()
-});
+}
+
+
 function fetchTodoList() {
   $.ajax({
     method: "GET",
@@ -45,9 +53,6 @@ function fetchTodoList() {
       </tr>      
       `)
       });
-
-
-
       $.ajax({
         method: "GET",
         url: 'http://localhost:3000/qrcode',
@@ -60,8 +65,11 @@ function fetchTodoList() {
         })
     })
     .fail((err) => {
-      $("#alert").show()
-      $("#alert").text(err.responseJSON.message || err)
+      $("#notif").show("slow");
+      $("#notif").text(err.responseJSON.message || err)
+      setTimeout(function () {
+        $("#notif").fadeOut("slow");
+      }, 10000);
       console.log(err.responseJSON.message)
     })
 }
@@ -79,6 +87,7 @@ function addTodo(event) {
   event.preventDefault()
   const dateTime = new Date(`${$("#date").val()} ${$("#time").val()}`)
   const dateTodo = '' + dateTime
+  console.log($("#time").val(), '<<<<<<')
   $.ajax({
     method: "POST",
     url: "http://localhost:3000/todos",
@@ -96,12 +105,15 @@ function addTodo(event) {
       fetchTodoList()
     })
     .fail((err) => {
-      $("#alert").show()
-      $("#alert").text(err.responseJSON.message)
+      $("#notif").show()
+      $("#notif").text(err.responseJSON.message)
+      setTimeout(function () {
+        $("#notif").fadeOut("slow");
+      }, 10000);
       console.log(err.responseJSON.message)
     })
     .always(() => {
-      $('#addFields')[0].reset();
+      // $('#addFields')[0].reset();
     })
 }
 function updateTodo() {
@@ -141,8 +153,11 @@ function deleteTodo(id) {
       fetchTodoList()
     })
     .fail((err) => {
-      $("#alert").show()
-      $("#alert").text(err.responseJSON.message)
+      $("#notif").show()
+      $("#notif").text(err.responseJSON.message)
+      setTimeout(function () {
+        $("#notif").fadeOut("slow");
+      }, 10000);
       console.log(err.responseJSON.message)
     })
 }
@@ -167,8 +182,11 @@ function editTodo(id) {
       $("#id-update").val(todo.id)
     })
     .fail((err) => {
-      $("#alert").show()
-      $("#alert").text(err.responseJSON.message)
+      $("#notif").show()
+      $("#notif").text(err.responseJSON.message)
+      setTimeout(function () {
+        $("#notif").fadeOut("slow");
+      }, 10000);
       console.log(err.responseJSON.message)
     })
 
@@ -197,8 +215,11 @@ function login(event) {
       $("#after-login").show()
     })
     .fail((err) => {
-      $("#alert").show()
-      $("#alert").text(err.responseJSON.message)
+      $("#notif").show()
+      $("#notif").text(err.responseJSON.message)
+      setTimeout(function () {
+        $("#notif").fadeOut("slow");
+      }, 10000);
       console.log(err.responseJSON.message)
     })
     .always(() => {
@@ -219,8 +240,11 @@ function register(event) {
       console.log(result)
     })
     .fail((err) => {
-      $("#alert").show()
-      $("#alert").text(err.responseJSON.message)
+      $("#notif").show()
+      $("#notif").text(err.responseJSON.message)
+      setTimeout(function () {
+        $("#notif").fadeOut("slow");
+      }, 10000);
       console.log(err.responseJSON.message)
     })
     .always(() => {
@@ -229,6 +253,7 @@ function register(event) {
 }
 
 function toLogin() {
+  $("#welcome").hide()
   $("#btnLogOut").hide()
   $("#btnLogin").hide()
   $("#btnRegis").show()
@@ -237,6 +262,7 @@ function toLogin() {
 }
 
 function toRegis() {
+  $("#welcome").hide()
   $("#btnLogOut").hide()
   $("#btnLogin").show()
   $("#btnRegis").hide()
@@ -246,6 +272,7 @@ function toRegis() {
 function logOut() {
   localStorage.clear()
   signOut()
+  $("#welcome").show()
   $("#btnLogOut").hide()
   $("#btnRegis").show()
   $("#btnLogin").show()
@@ -265,7 +292,11 @@ function onSignIn(googleUser) {
     data: { id_token }
   })
     .done(function (result) {
-      alert("BERHASIL LOGIN DENGAN GOOGLE");
+      $("#notif").show()
+      $("#notif").text("selamat berhasil login dengan google")
+      setTimeout(function () {
+        $("#notif").fadeOut("slow");
+      }, 10000);
       localStorage.token = result.access_token
       fetchTodoList()
       $("#btnLogOut").show()
@@ -276,8 +307,11 @@ function onSignIn(googleUser) {
       $("#after-login").show()
     })
     .fail((err) => {
-      $("#alert").show()
-      $("#alert").text(err.responseJSON.message)
+      $("#notif").show()
+      $("#notif").text(err.responseJSON.message)
+      setTimeout(function () {
+        $("#notif").fadeOut("slow");
+      }, 10000);
       console.log(err.responseJSON.message)
     })
 }

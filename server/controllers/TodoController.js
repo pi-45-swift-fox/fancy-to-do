@@ -2,6 +2,7 @@ const { Todo } = require('../models')
 
 class TodoController {
   static async create(req, res,next) {
+    console.log('<<<<<<')
     const form = {
       title: req.body.title,
       description: req.body.description,
@@ -11,7 +12,7 @@ class TodoController {
     }
     try {
       const dataTodo = await Todo.create(form)
-      return res.status(201).json(dataTodo)
+      return res.status(201).json({msg:"berhasil create todo"})
     } catch (error) {
       next(error)
     }
@@ -40,7 +41,7 @@ class TodoController {
           id
         }
       })
-      res.status(200).json(dataTodo)
+      res.status(200).json({msg:"berhasil delete todo"})
     } catch (error) {
       next(error)
     }
