@@ -202,3 +202,12 @@
   "msg":"internal server error"
 }
 ```
+
+## Third Party API
+### request
+- body
+```json
+{
+  "txt":"[ 1 (tugas) (belajar) (complete) (2020-08-14T09:53:47.751Z) ] [ 2 (tugas) (nyapu) (uncomplete) (2020-08-14T09:55:17.087Z) ]!"
+}
+```
