@@ -1,39 +1,212 @@
 # fancy-to-do
 Membuat App tentang hal - hal keren yang bisa dilakukan
 
+# Guide
 ## Endpoints
 ### GET `/`
-##### Mendapatkan detail user yang logged in
+##### Mendapatkan todo user yang logged in
 
 #### Request Headers
-> { <br />
-    "access_token": "your access token" <br />
-> } <br />
+>
+    "access_token": "your access token"
+> 
+
+#### Request Body
+>
+    _Tidak diperlukan_
+>
 
 #### Response (200)
-> {<br />
-    "id": 1,<br />
-    "title": "<todo title>",<br />
-    "description": "<todo description>",<br />
-    "status": "<todo status>",<br />
-    "dueDate": "<todo dueDate>",<br />
-    "createdAt": "2020-03-20T07:15:12.149Z",<br />
-    "updatedAt": "2020-03-20T07:15:12.149Z"<br />
- > }
+>
+    "id": "Todo serialized ID",
+    "title": "Todo title",
+    "description": "Todo description",
+    "status": "Task status",
+    "UserId": "User (Owner) ID",
+    "dueDate": "Todo's date of due",
+    "createdAt": "Date Sequelize",
+    "updatedAt": "Date Sequelize"
+ >
+ 
+ #### Response (409)
+ >
+  "error": "Tidak ada token terkirim/terdaftar"
+ >
 
+### POST `/login`
+##### Mendapatkan akses (token) user dalam database
 
-/*
-Method      | URL                   | Description
-:---:       | :---:                 | ---
-**GET**     | `/`                   | Mendapatkan detail user yang logged in
-**GET**     | `/user/todo`          | Mendapatakan todo user tersimpan dalam database
-**POST**    | `/register`           | Register, key: <br /> - email <br /> - username (3) <br /> - password
-**POST**    | `/login`              | Login, key: <br /> - email <br /> - username (3) <br /> - password
-**POST**    | `/google-login`       | Fitur khusus untuk OAuth Google
-**POST**    | `/send`               | Gunakan body form-encoded. Required key adalah sebagai berikut: <br /> - Kasih_ID dengan key User ID yang datanya ingin di ambil <br /> - from dengan key pengirim email <br /> - to dengan key penerima email
-**GET**     | `/todos`              | Mendapatakan seluruh data todos di dalam database
-**POST**    | `/todos`              | Jika sudah login, dapat menambahkan todo dengan key: <br /> - title (required) <br /> - description <br /> - status (boolean) <br /> - dueDate (yyyy/mm/dd, harus melewati tanggal server)
-**GET**     | `/todos/:id`          | Detail dari todo tertuju
-**PUT**     | `/todos/:id/`         | Edit, key: <br /> - title (required) <br /> - description <br /> - status (boolean) <br /> - dueDate (yyyy/mm/dd, harus melewati tanggal server)
-**DELETE**  | `/todos/:id/`         | Delete todo tertuju
-*/
+#### Request Headers
+>
+    _Tidak diperlukan_
+>
+
+#### Request Body
+>
+    "email": "Input email user",
+    "password": "Input password user"
+>
+
+#### Response (200)
+>
+    "username": "Username yang teregister dalam database",
+    "token": "Token User untuk access ke server"
+ >
+ 
+ #### Response (401)
+ >
+  "msg": "Email/password salah"
+ >
+
+### POST `/register`
+##### Mendaftarkan data user ke dalam database
+
+#### Request Headers
+>
+    _Tidak diperlukan_
+>
+
+#### Request Body
+>
+    "username": "Input username User",
+    "email": "Input email User",
+    "password": "Input password User"
+>
+
+#### Response (200)
+>
+    "msg": "OK"
+ >
+ 
+#### Response (400)
+>
+ "msg": "Terjadi kesalahan input"
+>
+ 
+#### Response (409)
+>
+ "msg": "Email sudah terdaftar"
+>
+
+### POST `/google-login`
+##### Mendapatkan akses (token) user dalam database melalui google
+
+#### Request Headers
+>
+    _Tidak diperlukan_
+>
+
+#### Request Body
+>
+    "username": "Input username User",
+    "email": "Input email User",
+    "password": "Input password User"
+>
+
+#### Response (200)
+>
+    "username": "Username yang teregister dalam database",
+    "token": "Token User untuk access ke server"
+>
+
+### POST `/todos`
+##### Menambahkan todos baru ke database sesuai user yang logged in
+
+#### Request Headers
+>
+    "access_token": "Token provided dari client"
+>
+
+#### Request Body
+>
+    "title": "Todo title",
+    "description": "Todo description",
+    "status": "Todo status",
+    "dueDate": "Todo's date of due"
+>
+
+#### Response (201)
+>
+    "id": "Todo serialized ID",
+    "title": "Todo title (new)",
+    "description": "Todo description (new)",
+    "status": "Todo status (new)",
+    "UserId": "User (Owner) ID",
+    "dueDate": "Todo's date of due",
+    "createdAt": "Current Date",
+    "updatedAt": "Current Date"
+>
+
+#### Response (400)
+>
+    "msg": "Terjadi kesalahan input"
+>
+
+#### Response (409)
+>
+    "msg": "Tidak ada token terkirim/terdaftar"
+>
+
+### PUT `/todos/id`
+##### Mengedit todo di database sesuai user yang logged in
+
+#### Request Headers
+>
+    "access_token": "Token provided dari client"
+>
+
+#### Request Body
+>
+    "title": "Todo title",
+    "description": "Todo description",
+    "status": "Todo status".
+    "dueDate": "Todo's date of due"
+>
+
+#### Response (201)
+>
+    "msg": "OK"
+>
+
+#### Response (400)
+>
+    "msg": "Terjadi kesalahan input"
+>
+
+#### Response (404)
+>
+    "msg": "Todo yang dicari tidak ditemukan"
+>
+
+#### Response (409)
+>
+    "msg": "Tidak ada token terkirim/terdaftar"
+>
+
+### DELETE `/todos/id`
+##### Menghapus todo di database sesuai user yang logged in
+
+#### Request Headers
+>
+    "access_token": "Token provided dari client"
+>
+
+#### Request Body
+>
+    _Tidak Perlu_
+>
+
+#### Response (200)
+>
+    "msg": "OK"
+>
+
+#### Response (404)
+>
+    "msg": "Todo yang dicari tidak ditemukan"
+>
+
+#### Response (409)
+>
+    "msg": "Tidak ada token terkirim/terdaftar"
+>
