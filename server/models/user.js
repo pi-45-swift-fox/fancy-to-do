@@ -23,6 +23,9 @@ module.exports = (sequelize, DataTypes) => {
                 isEmail: {
                     args: true,
                     msg: 'Please input valid email'
+                },
+                notEmpty:{
+                    msg:'Please input email for register'
                 }
             }
         },
@@ -34,10 +37,10 @@ module.exports = (sequelize, DataTypes) => {
                     if (value.length < 6) throw new Error('Password minimum 6 characters!')
                 },
                 notNull: {
-                    msg: "Please input due date for your todo list!"
+                    msg: "Please input password for register!"
                 },
                 notEmpty: {
-                    msg: "Please input due date for your todo list!"
+                    msg: "Please input password for register!"
                 }
             }
         }

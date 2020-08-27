@@ -7,24 +7,25 @@ class UserController {
     static async register(req, res, next) {
         try {
             const { email, password } = req.body
-            const checkSameEmail = await User.findOne({
-                where: {
-                    email
-                }
-            })
-            if (!checkSameEmail) {
-                const newUser = await User.create({
-                    email,
-                    password
+            if(email){
+                const checkSameEmail = await User.findOne({
+                    where: {
+                        email
+                    }
                 })
-                const token = jwt.sign({ id: newUser.id, email: newUser.email }, process.env.JWT_SECRET);
-                res.status(201).json({ token })
-            } else {
-                next({ errorCode: 'DUPLICATE_EMAIL', message: 'Your email is already used. Please login or sign up with a new email' })
+                if (!checkSameEmail) {
+                    const newUser = await User.create({
+                        email,
+                        password
+                    })
+                    const token = jwt.sign({ id: newUser.id, email: newUser.email }, process.env.JWT_SECRET);
+                    res.status(201).json({ token })
+                } else {
+                    next({ errorCode: 'DUPLICATE_EMAIL', message: 'Your email is already used. Please login or sign up with a new email' })
+                }
+            } else{
+                next({errorCode:'INVALID_ACCOUNT', msg:'Please input email and password'})
             }
-
-
-
         } catch (err) {
             next(err);
         }

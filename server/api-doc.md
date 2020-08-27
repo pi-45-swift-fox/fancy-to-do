@@ -1,19 +1,32 @@
 # Todos App Server
 Listof available endpoints:
+
 * POST /todos
 * GET /todos
 * GET /todos/:id
 * PUT /todos/:id
+* PATCH /todos/:id/status
 * DELETE /todos/:id
+* POST /register
+* POST /login
+* POST /recipe
 
 &nbsp;
 
 ## RESTful endpoints
+
 ### POST /todos
 
 > create new todos
 
 _Request_
+
+* headers
+```
+{
+  accesstoken : <accesstoken from login>
+}
+```
 
 * data
 ```
@@ -44,13 +57,26 @@ _Response (500 - internal errors)_
 _Response (400 - validation errors)_
 ```
 {
-  "message": "validation errors"
+    "message": [
+        "Please input title for your todo list!",
+        "Please input description for your todo list!",
+        "Please input due date for your todo list!"
+    ]
 }
 ```
 ---
 ### GET /todos
 
 > Get all todos
+
+_Request_
+
+* headers
+```
+{
+  accesstoken : <accesstoken from login>
+}
+```
 
 _Response (200 - ok)_
 ```
@@ -89,7 +115,15 @@ _Response (500 - internal errors)_
 
 > Get todo by id
 
-Request:
+_Request_
+
+* headers
+```
+{
+  accesstoken : <accesstoken from login>
+}
+```
+
 * data:
 ```
 {
@@ -113,7 +147,7 @@ _Response (200 - ok)_
 _Response (404 - not found)_
 ```
 {
-    "message": "error not found"
+    "message": "Data Not Found"
 }
 ```
 _Response (500 - internal errors)_
@@ -127,7 +161,15 @@ _Response (500 - internal errors)_
 
 > Update todo by id
 
-Request:
+_Request_
+
+* headers
+```
+{
+  accesstoken : <accesstoken from login>
+}
+```
+
 * data
 ```
 {
@@ -154,7 +196,7 @@ _Response (200 - ok)_
 _Response (404 - not found)_
 ```
 {
-    "message": "error not found"
+    "message": "Data Not Found"
 }
 ```
 _Response (500 - internal errors)_
@@ -163,13 +205,71 @@ _Response (500 - internal errors)_
   "message": "internal errors"
 }
 ```
+
+---
+### PATCH /todos/:id/status
+
+> Update todo status by id
+
+_Request_
+
+* headers
+```
+{
+  accesstoken : <accesstoken from login>
+}
+```
+
+* data
+```
+{
+  "status": "boolean"
+}
+```
+
+_Response (200 - ok)_
+```
+{
+    "id": 25,
+    "title": "Watching boku no hero",
+    "description": "watch in web",
+    "status": true,
+    "due_date": "2020-08-20T00:00:00.000Z",
+    "UserId": 9,
+    "createdAt": "2020-08-11T16:49:04.978Z",
+    "updatedAt": "2020-08-11T16:50:00.251Z"
+}
+```
+
+_Response (404 - not found)_
+```
+{
+    "message": "Data Not Found"
+}
+```
+_Response (500 - internal errors)_
+```
+{
+  "message": "internal errors"
+}
+```
+
+
 ---
 
 ### DELETE /todos/:id
 
 > Delete todo by id
 
-Request:
+_Request_
+
+* headers
+```
+{
+  accesstoken : <accesstoken from login>
+}
+```
+
 * data
 ```
 {
@@ -193,9 +293,127 @@ _Response (200 - ok)_
 _Response (404 - not found)_
 ```
 {
-    "message": "error not found"
+    "message": "Data Not Found"
 }
 ```
+_Response (500 - internal errors)_
+```
+{
+  "message": "internal errors"
+}
+```
+
+---
+### POST /register
+
+> register new user
+
+_Request_
+
+* data
+```
+{
+  "email": "email",
+  "password": "string"
+}
+```
+
+_Response (201)_
+```
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImVtYWlsIjoiZ3VhcmFzdUBnbWFpbC5jb20iLCJpYXQiOjE1OTcxNjM2MzJ9.HJGiBF8djr5X2k82GXibQ8B1VQrOQ3SHmtYE_dpEAUY"
+}
+```
+
+_Response (500 - internal errors)_
+```
+{
+  "message": "internal errors"
+}
+```
+
+_Response (400 - validation errors)_
+```
+{
+    "message": "Please input password for register!"
+}
+```
+_Response (401 - Unauthorized)_
+```
+{
+    "message": "Your email is already used. Please login or sign up with a new email"
+}
+```
+
+---
+### POST /login
+
+> login user
+
+_Request_
+
+* data
+```
+{
+  "email": "email",
+  "password": "string"
+}
+```
+
+_Response (201)_
+```
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImVtYWlsIjoiZ3VhcmFzdUBnbWFpbC5jb20iLCJpYXQiOjE1OTcxNjM2MzJ9.HJGiBF8djr5X2k82GXibQ8B1VQrOQ3SHmtYE_dpEAUY"
+}
+```
+
+_Response (500 - internal errors)_
+```
+{
+  "message": "internal errors"
+}
+```
+
+_Response (401 - Unauthorized)_
+```
+{
+    "message": "Incorrect email or password"
+}
+```
+
+### POST /recipe
+
+> see recipe lists
+
+_Request_
+
+* headers
+```
+{
+  accesstoken : <accesstoken from login>
+}
+```
+
+* data
+```
+{
+  "recipeRequested":"string"
+}
+```
+
+_Response (201)_
+```
+[
+    {
+        "title": "Tim and Tracy's Chocolate Cake (Boiled)",
+        "href": "http://www.recipezaar.com/Tim-and-Tracys-Chocolate-Cake-Boiled-259680",
+        "ingredients": "baking soda, butter, cocoa powder, eggs, flour, sugar, water",
+        "thumbnail": "http://img.recipepuppy.com/34464.jpg"
+    },
+    ...
+}
+```
+
 _Response (500 - internal errors)_
 ```
 {

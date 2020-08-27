@@ -1,5 +1,4 @@
 module.exports = function(err, req, res, next) {
-    // console.log('err', err);
 
     let statusCode = 500
     let message = 'Internal server errors'
@@ -19,7 +18,7 @@ module.exports = function(err, req, res, next) {
         message = 'Data Not Found'
         statusCode = 404
     } else if (err.errorCode == 'INVALID_ACCOUNT' || err.name == 'JsonWebTokenError') {
-        message = 'Incorrect email or password'
+        message = err.msg || 'Incorrect email or password'
         statusCode = 401
     } else if (err.errorCode == 'FORBIDDEN') {
         message = 'Forbidden Request'

@@ -10,13 +10,66 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css" integrity="sha384-VCmXjywReHh4PwowAiWNagnWcLhlEJLA5buUprzK8rxFgeH0kww/aWY76TfkUoSX" crossorigin="anonymous">
 
     <!-- <link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css"> -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet">
+
     <title>Todos</title>
 </head>
 
 <body>
+    <style>
+        *{
+            margin: 0;
+            font-family: 'Quicksand', sans-serif;
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        }
+        .bg-color {
+            /* background-color: rgb(230, 167, 132); */
+            background: #70e1f5;  /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #ffd194, #70e1f5);  /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #ffd194, #70e1f5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            color: #649173;
+            border-radius: 10px;
+            box-shadow: -1px 0px 18px -6px rgba(0,0,0,0.75);
 
+        }
+        .bg-color:hover {
+            background: #5a8e97;  /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #b89e7d, #4cdef8);  /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #ffd7a3, #83d2e0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            color: #649173;
+            border-radius: 10px;
+        }
+
+        .bg-edit {
+            background: #556270; /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #556270, #ff6b6b); /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #556270, #ff6b6b);
+            padding: 100px;
+            margin: 0;
+            color: white;
+            border-radius: 10px;
+        }
+
+        .bg-add {
+            padding: 100px;
+            background: #D3959B;  /* fallback for old browsers */
+            background: -webkit-linear-gradient(to left, #BFE6BA, #D3959B);  /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to left, #BFE6BA, #D3959B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            border-radius: 10px;
+        }
+
+        #icon {
+            cursor: pointer;
+            fill: #649173;
+        }
+
+        #listTodo {
+            cursor: pointer;
+        }
+    </style>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-color">
+        <svg class="mr-3" id="icon" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24"><path d="M22 2v20h-20v-20h20zm2-2h-24v24h24v-24zm-4 7h-8v1h8v-1zm0 5h-8v1h8v-1zm0 5h-8v1h8v-1zm-10.516-11.304l-.71-.696-2.553 2.607-1.539-1.452-.698.71 2.25 2.135 3.25-3.304zm0 5l-.71-.696-2.552 2.607-1.539-1.452-.698.709 2.249 2.136 3.25-3.304zm0 5l-.71-.696-2.552 2.607-1.539-1.452-.698.709 2.249 2.136 3.25-3.304z"/></svg>
         <a class="navbar-brand disabled">Fancy Todo</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -38,6 +91,7 @@
         <div class="containerRegister" style="width:1200px;height: 710px; ;float:left;text-align:left;align-items: center;background-image: url(https://cdn.wallpapersafari.com/80/27/MsFw1P.png);">
             <div style="width:1000px;float:right;text-align:left;padding-right: 100px;align-items: center;padding-top: 20px;">
                 <h2 class="display-2">Register yourself here!</h2>
+                <div id="errRegister" style="background-color: red;opacity: 50%;;color: whitesmoke;text-align: center;"> </div>
                 <form action="#" method="post" onsubmit="registerNewUser(event)" id="registerForm">
                     <div class="form-group">
                         <label for="registerEmail">Email address</label>
@@ -64,7 +118,8 @@
     <section class="loginForm">
         <div class="containerLogin" style="width:750px;height: 730px; ;float:right;text-align:left;align-items: center;background-image: url(https://cdn.wallpapersafari.com/80/27/MsFw1P.png);">
             <div style="width:600px;float:right;text-align:left;padding-right: 50px;align-items: center;padding-top: 120px;">
-                <h2 class="display-2">Log In</h2>
+                <h2 class="display-2" >Log In</h2>
+                <div id="errLogin" style="color: whitesmoke;background-color: red;opacity: 50%; text-align: center;"></div>
                 <form action="#" method="post" id="loginForm" onsubmit="loginSubmission(event)">
                     <div class="form-group">
                         <label for="loginEmail">Email address</label>
@@ -89,27 +144,33 @@
     <br><br>
     <!-- Todo List -->
     <section>
-        <div id="todoList">
-            <table class="table table-striped">
-                <thead>
-                    <th>No</th>
-                    <th>List To Do</th>
-                    <th>Description</th>
-                    <th>Done?</th>
-                    <th>Due Date (YYYY-MM-DD)</th>
-                    <th>Delete?</th>
-                </thead>
-                <tbody id="listTodo">
+        <div id="todoList"  class="container">
+            <div >
+                Go to navbar and search for your recipe!
+            </div>
+            <div class="bg-color">
+                <table class="table table-striped">
+                    <thead>
+                        <th>No</th>
+                        <th>List To Do</th>
+                        <th>Description</th>
+                        <th>Done?</th>
+                        <th>Due Date</th>
+                        <th>Delete?</th>
+                        <th>Edit?</th>
+                    </thead>
+                    <tbody id="listTodo">
 
-                </tbody>
-            </table>
-            <div id="noTodo"></div>
+                    </tbody>
+                </table>
+                <div id="noTodo"></div>
+            </div>
         </div>
 
     </section>
 
     <!-- Form Add Todo -->
-    <section class="addTodoForm" style="padding: 100px; background-color: salmon;">
+    <section class="addTodoForm bg-add mx-auto container" >
         <h2 class="display-2">Add Your Todo!</h2>
         <form action="#" method="post" onsubmit="addTodoPost(event)" id="addTodoPost">
             <div class="form-group">
@@ -132,9 +193,34 @@
 
     </section>
 
-    <!-- Recipe Search -->
+    <!-- Form edit -->
+    <section class="editTodoForm bg-edit container mx-auto" >
+        <h2 class="display-2">Edit Your Todo!</h2>
+        <form action="#" method="post" onsubmit="editTodo(event)">
+            <div class="form-group">
+                <label for="edittodoTitle">Todo Name</label>
+                <input type="text" class="form-control" id="editTodoTitle">
+            </div>
+            <div class="form-group">
+                <label for="edittodoDescription">Todo Description</label>
+                <input type="text" class="form-control" id="editTodoDescription">
+            </div>
+            <div class="form-group">
+                <label for="edittodoDue_date">Your Due Date</label>
+                <input type="date" class="form-control" id="editTodoDue_date">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button class="btn btn-danger" onclick="backToTodoLists(event)">Cancel</button>
 
-    <section class="getRecipeWeb">
+        </form>
+
+
+    </section>
+
+
+    <!-- Recipe Search -->
+    <section class="getRecipeWeb bg-color container">
+        <h1 style="text-align: center;">Recipe List</h1>
         <div id="recipeList">
             <table class="table table-striped">
                 <thead>
@@ -148,7 +234,7 @@
 
                 </tbody>
             </table>
-            <div id="noTodo"></div>
+            <div id="noRecipe"></div>
         </div>
 
     </section>
@@ -164,6 +250,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Google Sign In -->
     <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="index.js"></script>
 </body>
 
