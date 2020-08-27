@@ -6,10 +6,12 @@ const authenticate = require('../Middlewares/authenticate')
 route.get('/', (req,res)=>{
     res.send('123')
 })
-route.post('/google-login', UserController.googleLogin)
 
+route.post('/google-login', UserController.googleLogin)
 route.post('/register', UserController.register)
 route.post('/login', UserController.login)
+
+
 route.use(authenticate)
 route.use('/todos', todoRoutes)
 

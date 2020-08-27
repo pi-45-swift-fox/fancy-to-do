@@ -21,10 +21,6 @@ class TodoController{
             const data = await Todo.findAll(
                 {where: {userId : req.userLogin.id}, order: [['due_date', 'ASC']]}
             )
-            const array = []
-            data.forEach(el => {
-                const date = el.due_date.toDateString()
-            });
             res.status(200).json(data)
 
         } catch (error){

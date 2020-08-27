@@ -33,6 +33,7 @@ $(document).ready(() => {
         showHomepage()
         showTodo()
     })
+    
     $('#addListTodos').click(event => {
         event.preventDefault()
         console.log("click")
@@ -219,8 +220,7 @@ function showHomepage() {
     $("#updateTodo-form").hide()
     $("#logoutButton").click(event => {
         event.preventDefault()
-        localStorage.clear()
-        const auth2 = gapi.auth2.getAuthInstance();
+        const auth2 = gapi.auth2.getAuthInstance()
         auth2.signOut()
         .then(data=>{
             localStorage.clear()

@@ -2,7 +2,7 @@ const {User, Todo} = require('../models')
 
 function authorize(req, res, next){
     try{
-        Todo.findByPk(req.params.id)
+        Todo.findByPk(req.params.id, {include:User})
         .then(data=>{
             if(req.userLogin.id == data.userId){
                 next()
