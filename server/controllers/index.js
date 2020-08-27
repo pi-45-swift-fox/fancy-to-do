@@ -3,7 +3,7 @@ const {Todo, User} = require('../models')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const axios = require('axios')
-// const holidayApi = new HolidayAPI({ key });
+const verifyGoolge = require('../helpers/verifyGoogleToken')
 
 class Controller {
     static async create(req, res, next){
@@ -104,6 +104,48 @@ class Controller {
         } catch (error) {
             next({name: 'Invalid Request', message: 'Email or Password Wrong'})
         }
+    }
+
+    static async googleLogin(req, res, next){
+        try {
+            const google_token = req.headers.google_token
+        
+            const payload = await verifyGoolge(google_token)
+            
+            const email = payload.email
+            const user = await User.findOne({
+                where: {
+                    email
+                }
+            })
+            const password = process.env.DEFAULT_PASSWORD_GOOGLE
+            if(user) {
+                const check = bcrypt.compareSync(password, user.password)
+
+                if(check){
+                    const token = jwt.sign({email : user.email, role : user.role}, process.env.JWT_SECRET)
+                    res.status(200).json(token)
+                } else {
+                    next({name: 'Invalid Request', message: 'You have registered user in server, please login to server again in page'})
+                }
+
+            }else{
+                
+                const newUser = await User.create({
+                    email,
+                    password,
+                    role: 'reader'
+                })
+                const token = jwt.sign({email : newUser.email, role : newUser.role}, process.env.JWT_SECRET)
+                res.status(200).json(token)
+            }
+            res.status(200).json({
+                msg: 'Sudah didaftar di server'
+            })
+        } catch (error) {
+            next(error)
+        }
+
     }
 
     static getHolidays(req, res, next){

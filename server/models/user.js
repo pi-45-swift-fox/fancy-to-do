@@ -30,9 +30,6 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,       
     validate: {
       isMoresix(){
-        console.log(this.password);
-        
-        console.log(this.password.length);
         if(this.password.length < 6){
           throw new Error("Password Minimal 6 characters")
         }
