@@ -9,6 +9,7 @@ Listof available endpoints:
 * DELETE /todos/:id
 * POST /register
 * POST /login
+* POST /googleLogin
 * POST /recipe
 
 &nbsp;
@@ -378,6 +379,34 @@ _Response (401 - Unauthorized)_
 ```
 {
     "message": "Incorrect email or password"
+}
+```
+
+---
+### POST /googleLogin
+
+> login user using Google
+
+_Request_
+
+* data
+```
+{
+  "google_token": "string"
+}
+```
+
+_Response (201 / 200)_
+```
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImVtYWlsIjoiZ3VhcmFzdUBnbWFpbC5jb20iLCJpYXQiOjE1OTcxNjM2MzJ9.HJGiBF8djr5X2k82GXibQ8B1VQrOQ3SHmtYE_dpEAUY"
+}
+```
+
+_Response (500 - internal errors)_
+```
+{
+  "message": "internal errors"
 }
 ```
 
