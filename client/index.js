@@ -160,6 +160,7 @@ function getTodo1(todo) {
     })
     .fail(err => {
         console.log('error',err);
+        showAlertFail(err.responseJSON)
     })
     .always('selesai')
 }
@@ -233,9 +234,11 @@ function updateTodo(todo) {
         })
         .done(()=>{
             showHomePage()
+            showAlertSuccess('Successfully Updated')
         })
         .fail(err => {
             console.log(err);
+            showAlertFail(err.responseJSON)
         })
         .always(()=>{
             console.log('selesai');
@@ -258,9 +261,11 @@ function deleteTodo(todo) {
     })
     .done(()=>{
         showHomePage()
+        showAlertSuccess('Successfully Deleted')
     })
     .fail(err => {
         console.log(err);
+        showAlertSuccess(err.responseJSON)
     })
     .always(()=>{
         console.log('selesai');
@@ -303,6 +308,24 @@ function getHoliday(year) {
         console.log('selesai');
     })
 }
+
+function showAlertSuccess(message) {
+    Swal.fire({
+        title: 'Success!',
+        text: message,
+        icon: 'success',
+        confirmButtonText: 'Ok'
+      })
+}
+
+function showAlertFail(message) {
+    Swal.fire({
+        title: 'Error!',
+        text: message,
+        icon: 'error',
+        confirmButtonText: 'Close'
+      })
+}
 $(document).ready(function (){
     if (!localStorage.accessToken) {
         showLogin()
@@ -338,13 +361,15 @@ $(document).ready(function (){
             }
         })
         .done(function (data){
-            localStorage.accessToken = data
+            localStorage.accessToken = data.token
             const email = $('#email').val('')
             const password = $('#password').val('')
-            showHomePage()    
+            showHomePage()
+            showAlertSuccess(data.email + 'Berhasil Login')    
         })
         .fail(function (err){
             console.log('err',err);
+            showAlertFail(err.responseJSON)    
         })
         .always(function (){
             console.log('selesai');
@@ -376,6 +401,7 @@ $(document).ready(function (){
             $('#passwordRegister').val('')
             $('#role').val('')
             showLogin()
+            showAlertSuccess('Successfully registered')    
         })
         .fail(function (err){
             $('#error-message-register').text(err.responseJSON)
@@ -416,13 +442,13 @@ $(document).ready(function (){
             accesstoken: localStorage.accessToken
         }
         })
-        .done(function (data){
+        .done( data => {
             $('#title').val('')
-            ('#description').val('')
-            ('#status').val('')
-            ('#Due_date').val('')
+            $('#description').val('')
+            $('#status').val('')
+            $('#Due_date').val('')
             showHomePage()
-
+            showAlertSuccess(data.title + ' Successfully added')    
         })
         .fail(function (err){
             $('#error-message-addTodo').text(err.responseJSON)
@@ -444,9 +470,11 @@ $(document).ready(function (){
         .then(()=>{
             localStorage.removeItem('accessToken')
             showLogin()
+            showAlertSuccess('Successfully Logged Out')
         })
         .catch(err => {
             console.log(err);
+            showAlertFail(err.responseJSON)
         })
         localStorage.removeItem('accessToken')
         showLogin()

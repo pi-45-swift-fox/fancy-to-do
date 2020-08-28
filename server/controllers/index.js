@@ -19,7 +19,7 @@ class Controller {
             })
             res.status(200).json(newCreate)
         } catch (err) {
-            next({name: 'Invalid Request', message: 'Invalid Request'})
+            next(err)
         }
         
     }
@@ -97,7 +97,7 @@ class Controller {
             const verified = bcrypt.compareSync(req.body.password, userLogin.password)
             if (verified) {
                 const token = jwt.sign({email : userLogin.email, role : userLogin.role}, process.env.JWT_SECRET)
-                res.status(200).json(token)
+                res.status(200).json({token, email: userLogin.email})
             } else {
                 next({name: 'Invalid Request', message: 'Email or Password Wrong'})
             }
