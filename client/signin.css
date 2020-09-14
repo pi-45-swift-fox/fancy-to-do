@@ -1,0 +1,155 @@
+html,
+body {
+  height: 100%;
+  background-color: ;
+}
+
+h3 {
+  font-size: 3vw;
+}
+
+.form-section {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100%;
+  background-color: #fcfcfc;
+  background-image: url("https://images.pexels.com/photos/3183183/pexels-photo-3183183.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+}
+
+img {
+  position: fixed;
+  margin-right: 2em;
+  z-index: -1;
+  max-width: 100%;
+  bottom: 1px;
+  right: 45em;
+}
+
+.row {
+  align-items: center;
+}
+
+.form {
+  padding-top: 9%;
+  padding-bottom: 7%;
+  padding-left: 8%;
+  padding-right: 8%;
+  height: 100%;
+  background-color: #fcfcfc;
+  z-index: 1;
+
+}
+
+.form2 {
+  margin-top: 400px;
+  padding: 10em;
+  align-items: center;
+  width: 50%;
+  height: 100%;
+  color: #fefefe;
+  font-family: 'Abril Fatface', cursive;
+  z-index: 1;
+}
+
+.font {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+}
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+.form-signin .checkbox {
+  font-weight: 400;
+  font-family: 'Poppins', sans-serif;
+}
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.navigation {
+  padding: 30px;
+  font-family: 'Poppins', sans-serif;
+
+}
+
+.nav-item {
+  padding: 10px;
+}
+
+.container {
+
+}
+
+.todo {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.gap {
+  width: 50px;
+  height: 50px;
+}
+
+.test {
+  padding: 50px 50px 0 50px;
+}
+
+.header {
+  padding: 40px;
+}
+
+.form-add {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100%;
+  background-image: url("https://images.pexels.com/photos/3183183/pexels-photo-3183183.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+}
+
+.form-update {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100%;
+  background-image: url("https://images.pexels.com/photos/3183183/pexels-photo-3183183.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+}
+
+.form-add .form-update {
+  padding: 0 50px;
+}

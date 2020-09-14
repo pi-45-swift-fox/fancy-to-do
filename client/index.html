@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Todo App</title>
+    <meta name="google-signin-client_id" content="1002384670585-e0v898fh30t40l8bk1d0e98bstf07aj7.apps.googleusercontent.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css" integrity="sha384-VCmXjywReHh4PwowAiWNagnWcLhlEJLA5buUprzK8rxFgeH0kww/aWY76TfkUoSX" crossorigin="anonymous">
+    <link href="signin.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <section class="form-section" id="loginpage">
+
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-6 form2">
+
+            <h1>Create your to do list with ease.</h1>
+            <p style="font-family: 'Poppins', sans-serif;">Start using our services by login with your account.</p>
+          </div>
+          <div class="col form">
+            <h3 class="font">Welcome to Todo App!</h3>
+            <form class="" action="#" method="post" id="form-login">
+              <h1 class="h3 mb-3 font-weight-normal font">Please sign in</h1>
+              <label for="inputEmail" class="font">Email:</label>
+              <input type="email" id="email" class="form-control" placeholder="Email address" required autofocus><br>
+              <label for="inputPassword" class="font">Password:</label>
+              <input type="password" id="password" class="form-control" placeholder="Password" required>
+              <div class="checkbox mb-3"><br>
+                <label style="font-family: 'Poppins', sans-serif;">
+                  <input type="checkbox" value="remember-me"> Remember me
+                </label>
+              </div>
+              <button type="submit" name="button" class="btn btn-lg btn-primary btn-block font rounded-pill shadow p-3 mb-5 rounded" data-toggle="button" aria-pressed="false">Login</button><br>
+              <a href="" onclick="registerUser(event)">Register here</a>
+              <div class="g-signin2" data-width="400" data-height="50" data-longtitle="true" data-theme="dark" data-onsuccess="onSignIn"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="form-section" id="registerpage">
+
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-6 form2">
+
+            <h1>Create your to do list with ease.</h1>
+            <p style="font-family: 'Poppins', sans-serif;">Start using our services by login with your account.</p>
+          </div>
+          <div class="col form">
+            <h3 class="font">Welcome to Todo App!</h3>
+            <form class="" action="#" method="post" id="form-register">
+              <h1 class="h3 mb-3 font-weight-normal font">Register here</h1>
+              <label for="inputEmail" class="font">Email:</label>
+              <input type="email" id="email-register" class="form-control" placeholder="Email address" required autofocus><br>
+              <label for="inputPassword" class="font">Password:</label>
+              <input type="password" id="password-register" class="form-control" placeholder="Password" required><br>
+              <button type="submit" name="button" class="btn btn-lg btn-primary btn-block font rounded-pill shadow p-3 mb-5 rounded" data-toggle="button" aria-pressed="false">Register</button>
+              <button id="cancel-register-form" type="button" name="button" class="btn btn-lg btn-danger btn-block font rounded-pill shadow p-3 mb-5 rounded" data-toggle="button" aria-pressed="false">Cancel</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="dashboard">
+        <div class="navigation shadow-sm p-3 mb-5 bg-white rounded">
+          <ul class="nav justify-content-end">
+            <li class="nav-item">
+              <a class="nav-link active" href="#">My Todos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="" id="create-todos">Create Todos</a>
+            </li>
+            <li class="nav-item">
+              <button id="logout-button" class="nav-link btn btn-primary shadow" type="button" name="button">Log out</button>
+            </li>
+          </ul>
+        </div>
+
+        <div class="container">
+          <div class="header">
+            <h2 class="font">Welcome, this is your dashboard!</h2>
+            <p>This is where you can see, create, or update your to do list</p>
+          </div>
+
+        <div class="todo rounded-lg shadow p-3 mb-5 bg-white rounded">
+          <div id="todo-content" class="row row-cols-1 row-cols-md-3 test">
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="form-add" class="form-add">
+      <div class="container shadow-lg p-3 mb-5 bg-white rounded-lg border border-light">
+        <div class="header">
+          <h1 class="font text-center">Create a new todo list here!</h1>
+        </div>
+
+        <form action="" method="post" id="add-todos-form">
+          <div class="form-group">
+            <label for="formGroupExampleInput" class="font">Title:</label>
+            <input value="" type="text" class="form-control" id="title-add" placeholder="Enter the title here" required>
+          </div>
+          <div class="form-group">
+            <label for="formGroupExampleInput2" class="font">Description:</label>
+            <input value="" type="text" class="form-control" id="description-add" placeholder="Enter the description here" required>
+          </div>
+          <div class="form-group">
+            <label for="formGroupExampleInput" class="font">Status:</label>
+            <input value="" type="text" class="form-control" id="status-add" placeholder="Enter the status here" required>
+          </div>
+          <div class="form-group">
+            <label for="formGroupExampleInput2" class="font">Due Date:</label>
+            <input value="" type="date" class="form-control" id="due_date-add" placeholder="Another input placeholder" required>
+          </div><br>
+          <div class="form-group">
+            <div class="row">
+              <div class="col">
+                <button type="submit" class="btn btn-lg btn-primary btn-block font rounded-pill shadow p-3 mb-5 rounded" id="add-button-form">Add Todo</button>
+              </div>
+              <div class="col">
+                <button type="button" class="btn btn-lg btn-danger btn-block font rounded-pill shadow p-3 mb-5 rounded" onclick="cancelForm(event)" id="cancel-button-form">Cancel</button>
+              </div>
+            </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+    </section>
+
+    <section id="form-update" class="form-update">
+      <div class="container shadow-lg p-3 mb-5 bg-white rounded-lg border border-light">
+        <div class="header">
+          <h1 class="font text-center">Create a new todo list here!</h1>
+        </div>
+
+        <form action="" method="post" id="update-todos-form">
+          <div class="form-group">
+            <label for="title" class="font">Title:</label>
+            <input name="title" value="" type="text" class="form-control" id="title-update" placeholder="Enter the title here" required>
+          </div>
+          <div class="form-group">
+            <label for="formGroupExampleInput2" class="font">Description:</label>
+            <input name="description" value="" type="text" class="form-control" id="description-update" placeholder="Enter the description here" required>
+          </div>
+          <div class="form-group">
+            <label for="formGroupExampleInput" class="font">Status:</label>
+            <input name="status" value="" type="text" class="form-control" id="status-update" placeholder="Enter the status here" required>
+          </div>
+          <div class="form-group">
+            <label for="formGroupExampleInput2" class="font">Due Date:</label>
+            <input name="due_date" value="" type="date" class="form-control" id="due_date-update" placeholder="Another input placeholder" required>
+          </div><br>
+          <div class="form-group">
+            <div class="row">
+              <div class="col">
+                <button type="submit" class="btn btn-lg btn-primary btn-block font rounded-pill shadow p-3 mb-5 rounded" id="update-button-form">Update Todo</button>
+              </div>
+              <div class="col">
+                <button type="button" class="btn btn-lg btn-danger btn-block font rounded-pill shadow p-3 mb-5 rounded" onclick="cancelForm(event)" id="cancel-button-form">Cancel</button>
+              </div>
+            </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+    </section>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="index.js"></script>
+
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js" integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous"></script>
+  </body>
+</html>
